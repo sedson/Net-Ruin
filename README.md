@@ -31,5 +31,7 @@ Users can expect to -
 Permaculture Network - [Link](http://root.schloss-post.com/)
 
 ![Permaculture Network](images/permaculture.png)
+![Wireframe](images/wireframe1.png)
+
 
 --------
