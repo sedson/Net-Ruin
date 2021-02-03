@@ -30,5 +30,6 @@ Users can expect to -
 ## Graphics references
 Permaculture Network - [Link](http://root.schloss-post.com/)
 
-![Permaculture Network]("images/Screen Shot 2021-02-03 at 1.22.46 PM.png")
+![Permaculture Network](images/permaculture.png)
+
 --------
