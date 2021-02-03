@@ -1,2 +1,2 @@
 # Wireframe
-![wireframe](/images/wireframe.png)
+![wireframe](/images/wireframe1.png)
