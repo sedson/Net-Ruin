@@ -1,4 +1,4 @@
-# Project 1 – 1000 Lost Flowers
+# Project 1 – ASCII Adventure Game
 
 This is a game about exploring a map in order to find lost items. The game will be based on a tiled grid of divs and use simple ASCII-style graphics (see references at bottom). The grid tiles will derive from a single tile class that can contain different objects, behaviors, and logics.
 
@@ -43,7 +43,7 @@ Users can expect to -
 Permaculture Network - [Link](http://root.schloss-post.com/)
 
 ![Permaculture Network](images/permaculture.png)
-![Wireframe](images/wireframe1.png)
 
+Dwarf Fortress
 
---------
+![Dwarf Fortress](images/DFascii3.png)
