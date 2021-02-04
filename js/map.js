@@ -1,0 +1,10 @@
+const map = [["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Grass", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Wall",  "Grass", "Wall"],
+             ["Grass", "Wall", "Grass",  "Grass",  "Grass",  "Grass",  "Grass",  "Wall",  "Grass", "Wall"]]

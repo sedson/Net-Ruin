@@ -85,3 +85,9 @@ Permaculture Network - [Link](http://root.schloss-post.com/)
 Dwarf Fortress
 
 ![Dwarf Fortress](images/DFascii3.png)
+
+
+const tiles = [grass, wall, .....]
+
+
+foreach of those => let x = new tiles[1]()

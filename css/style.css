@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
+
+body{
+  background: black;
+  font-size: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+#gameboard {
+  background: black;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.tile{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.wall {
+  background-color: black;
+  color: white;
+}
+
+.grass {
+  background: black;
+  color: lime;
+}
+
+.player {
+    background: black;
+    color: hotpink;
+    z-index: 5;
+    transition: all 0.1s ease-in-out;
+}
