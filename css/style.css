@@ -2,8 +2,9 @@
 
 body{
   background: black;
-  font-size: 12px;
-  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  font-family: monospace;
+  /* overflow: hidden; */
 }
 
 #gameboard {
@@ -19,22 +20,52 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
+  /* pointer-events: none; */
+  cursor: crosshair;
+  user-select: none;
 }
 
+
+
 .wall {
-  background-color: black;
+  background-color: dimgray;
   color: white;
 }
 
 .grass {
-  background: black;
-  color: lime;
+  background: olive;
+  color: darkseagreen;
+}
+.empty{
+  background: dimgray;
+  color: gray;
+}
+.soil{
+  background: tan;
+  color: lemonchiffon;
+}
+
+.rock{
+  background: brown;
+  color: coral;
 }
 
 .player {
     background: black;
-    color: hotpink;
+    color: yellow;
     z-index: 5;
     transition: all 0.1s ease-in-out;
+}
+
+.tile:hover{
+}
+
+#tip{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 6px;
 }

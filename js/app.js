@@ -1,22 +1,14 @@
-console.log("js is working!");
+//------------------------------------------------
+// Dom wrapper functions
+//------------------------------------------------
+const domGet     = x => document.querySelector(x);
+const domGetAll  = x => document.querySelectorAll(x);
+const domMake    = x => document.createElement(x);
+const log        = x => console.log(x);
 
-// HELPERS
-const dGet    = x => document.querySelector(x);
-const dGetAll = x => document.querySelectorAll(x);
-const make    = x => document.createElement(x);
-const log     = x => console.log(x);
-
-// VARS
-const tileSize = 20;
-let player = null;
-let playerPos = [];
-let mapDimensions = {
-    width: 0,
-    height: 0
-}
-
-let tileMap = [];
-
+//------------------------------------------------
+// Constants for control
+//------------------------------------------------
 const directions = {
     UP:     [0 , -1],
     DOWN:   [0 ,  1],
@@ -24,91 +16,48 @@ const directions = {
     RIGHT:  [ 1 , 0]
 }
 
+//------------------------------------------------
+// Globally-scoped variables
+//------------------------------------------------
+const tileSize = 20;
 
-// CLASSES
-class Tile {
-    constructor() {
-        this.type = "empty";
-        this.playerCanEnter = false;
-        this.char = "·"
-    }
+let player = null;
+let playerPos = [];
+
+let mapDimensions = {
+    width: 0,
+    height: 0
 }
 
-class Empty extends Tile {
-    constructor() {
-        this.type = "empty";
-        this.playerCanEnter = false;
-        this.char = "·"
-    }
-}
+let tileMap = [];
+let board = null;
 
-class Rock extends Tile {
-    constructor() {
-        this.type = "rock";
-        this.playerCanEnter = false;
-        this.char = "•"
-    }
-}
-
-class Soil extends Tile {
-    constructor() {
-        this.type = "soil";
-        this.playerCanEnter = false;
-        this.char = "."
-    }
-}
-
-
-class Grass extends Tile {
-    constructor(){
-        super();
-        this.type = "grass";
-        this.playerCanEnter = true;
-        this.char = "·";
-    }
-}
-
-class Wall extends Tile {
-    constructor() {
-        super();
-        this.type = "wall";
-        this.playerCanEnter = false;
-        this.char = "░";
-    }
-}
-
-
-let board = dGet("#gameboard");
-
-
-
-
-function setDims(){
+//------------------------------------------------
+// Set up processes
+//------------------------------------------------
+function setDims() {
     mapDimensions.width = tileMap[0].length;
     mapDimensions.height = tileMap.length;
-
     board.style.width = mapDimensions.width * tileSize + "px";
     board.style.height = mapDimensions.height * tileSize + "px";
 }
 
-
-for (let i = 0; i < map.length; i++) {
-    let row = [];
-    for (let j  = 0; j < map[i].length; j++ ) {
-        let tile = eval(`new ${map[i][j]}()`);
-        row.push(tile);
-        board.appendChild(makeTileDiv(tile.type, tile.char, j, i, tileSize));
+function buildMapFromData() {
+    let arr = [];
+    for (let i = 0; i < map.length; i++) {
+        let row = [];
+        for (let j  = 0; j < map[i].length; j++ ) {
+            let tile = eval(`new ${map[i][j]}()`); // thanks thiago!
+            row.push(tile);
+            board.appendChild(makeTileDiv(tile.type, tile.char, j, i, tileSize));
+        }
+        arr.push(row);
     }
-    tileMap.push(row);
+    return arr;
 }
 
-tileMap = makeMap();
-setDims();
-
-
-
 function makeTileDiv (className, innerText, xPos, yPos, size) {
-    let tileDiv = make("div");
+    let tileDiv = domMake("div");
     tileDiv.className = `tile ${className}`;
     tileDiv.innerText = innerText;
     tileDiv.style.width = size + "px";
@@ -118,9 +67,11 @@ function makeTileDiv (className, innerText, xPos, yPos, size) {
     return tileDiv;
 }
 
-
+//------------------------------------------------
+// Updating functions
+//------------------------------------------------
 function drawPlayer (xPos, yPos) {
-    let play = dGet("#player");
+    let play = domGet("#player");
     if (play) {
         play.style.left =  (xPos * tileSize) + "px";
         play.style.top  =  (yPos * tileSize) + "px";
@@ -132,21 +83,26 @@ function drawPlayer (xPos, yPos) {
     }
 }
 
-playerPos = [3,1];
-
-drawPlayer(...playerPos);
-
-
 function movePlayer (dir) {
     let y = playerPos[0] + directions[dir][0];
     let x = playerPos[1] + directions[dir][1];
 
     if(x >= 0 && x < map[0].length) {
         if(y >= 0 && y < map.length) {
-            if (tileMap[x][y].playerCanEnter) {
+            if (tileMap[x][y].onPlayerTryEnter()) {
                 playerPos = [y, x];
                 drawPlayer(...playerPos);
             }
         }
     }
 }
+
+//------------------------------------------------
+// Actually start the game
+//------------------------------------------------
+board = domGet("#gameboard");
+tileMap = buildMapFromData();
+setDims();
+playerPos = [3, 3];
+movePlayer("LEFT");
+drawPlayer(...playerPos);
