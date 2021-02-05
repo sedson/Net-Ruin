@@ -1,4 +1,4 @@
-const map = [
+const MAP_DATA = [
 	["Wall","Wall","Wall","Wall","Wall","Wall","Wall","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty"],
 	["Wall","Grass","Grass","Grass","Grass","Grass","Grass","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Soil","Rock","Grass","Rock","Rock","Rock","Rock","Rock","Rock","Soil","Soil","Soil","Soil","Soil","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty"],
 	["Wall","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Soil","Soil","Soil","Soil","Rock","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Grass","Rock","Rock","Soil","Soil","Soil","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty"],

@@ -28,31 +28,31 @@ body{
 
 
 .wall {
-  background-color: dimgray;
+  background-color: black;
   color: white;
 }
 
 .grass {
-  background: olive;
-  color: darkseagreen;
+  background: black;
+  color: olive;
 }
 .empty{
-  background: dimgray;
+  background: black;
   color: gray;
 }
 .soil{
-  background: tan;
-  color: lemonchiffon;
+  background: black;
+  color: tan;
 }
 
 .rock{
-  background: brown;
+  background: black;
   color: coral;
 }
 
 .player {
     background: black;
-    color: yellow;
+    color: cornflowerblue;
     z-index: 5;
     transition: all 0.1s ease-in-out;
 }
@@ -60,12 +60,41 @@ body{
 .tile:hover{
 }
 
-#tip{
+#info{
   position: fixed;
+  width: 100%;
   bottom: 0;
   left: 0;
   background-color: black;
   color: white;
   margin: 0;
   padding: 6px;
+}
+
+#info p, #info a {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+#info a {
+    text-decoration: underline;
+    cursor: pointer;;
+}
+
+#info a:hover{
+    color: yellow;
+}
+
+.not-valid {
+    color: red;
+}
+
+.entity {
+    background: transparent;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.flower {
+    color: yellow;
 }

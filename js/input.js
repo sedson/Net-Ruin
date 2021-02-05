@@ -32,6 +32,6 @@ window.addEventListener("keydown", function(e) {
 }, false);
 
 
-domGet("#gameboard").addEventListener("mouseover", function(event) {
-    domGet("#tip").innerText = event.target.className.split(' ').filter(x => x != "tile").join(" ").toUpperCase();
-});
+// domGet("#gameboard").addEventListener("mouseover", function(event) {
+//     domGet("#tip").innerText = event.target.className.split(' ').filter(x => x != "tile").join(" ").toUpperCase();
+// });

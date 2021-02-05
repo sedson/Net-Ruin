@@ -9,7 +9,7 @@ class Tile {
 
     onPlayerTryEnter () { return false; }
     type = "";
-    cahr = "";
+    char = "";
 
     onPlayerEnter () {
         for(let entity of this.containedEntities){
@@ -21,6 +21,10 @@ class Tile {
 
     addEntity (entity) {
       this.containedEntities.push(entity);
+    }
+
+    removeEnity (entity) {
+        this.containedEntities = this.containedEntities.filter(x => x !== entity);
     }
 }
 
@@ -49,7 +53,7 @@ class Rock extends Tile {
 
     onPlayerTryEnter () { return false; }
     type = "rock";
-    char = "#";
+    char = "∩";
 }
 
 //--------------------------
@@ -63,7 +67,7 @@ class Soil extends Tile {
 
     onPlayerTryEnter () { return true; }
     type = "soil";
-    char = ":";
+    char = "·";
 }
 
 //--------------------------
@@ -91,5 +95,5 @@ class Wall extends Tile {
 
     onPlayerTryEnter () { return false; }
     type = "wall";
-    char = "░";
+    char = "░░";
 }
