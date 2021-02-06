@@ -29,15 +29,26 @@ class Tile {
 }
 
 //--------------------------
+// Base Class
+//--------------------------
+class StaticBlockingTile extends Tile{
+    constructor (x, y) {
+        super(x, y);
+    }
+    onPlayerTryEnter () {
+        blockMessage(this.type, 1);
+        return false;
+    }
+}
+
+//--------------------------
 // Empty tile
 // hex: 000000
 //--------------------------
-class Empty extends Tile {
+class Empty extends StaticBlockingTile {
     constructor(x, y) {
         super(x , y);
     }
-
-    onPlayerTryEnter () { return false; }
     type = "empty";
     char = "#";
 }
@@ -46,12 +57,10 @@ class Empty extends Tile {
 // Rock tile
 // hex: E59281
 //--------------------------
-class Rock extends Tile {
+class Rock extends StaticBlockingTile {
     constructor(x, y) {
         super(x , y);
     }
-
-    onPlayerTryEnter () { return false; }
     type = "rock";
     char = "∩";
 }
@@ -88,12 +97,34 @@ class Grass extends Tile {
 // Wall tile
 // hex: FF0000
 //--------------------------
-class Wall extends Tile {
+class Wall extends StaticBlockingTile {
     constructor(x, y) {
         super(x , y);
     }
 
-    onPlayerTryEnter () { return false; }
+    onPlayerTryEnter () {
+        blockMessage(this.type, 1);
+        return false;
+    }
     type = "wall";
     char = "░░";
+}
+
+//--------------------------
+// Wall tile
+// hex: FF0000
+//--------------------------
+class Door extends Tile {
+    constructor(x, y) {
+        super(x , y);
+    }
+
+    onPlayerTryEnter () {
+        let unlock = playerInventory.some(x => x.type === "flower");
+        if(! unlock) blockMessage("Need flower to unlock Door", 2.5);
+        return unlock;
+    }
+
+    type = "door";
+    char = "█";
 }

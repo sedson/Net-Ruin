@@ -1,0 +1,56 @@
+.tile{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* pointer-events: none; */
+  cursor: crosshair;
+  user-select: none;
+}
+
+.player {
+    background: black;
+    color: yellow;
+    z-index: 5;
+    transition: all 0.1s ease-in-out;
+}
+
+.wall {
+  background-color: black;
+  color: gray;
+}
+
+.grass {
+  background: black;
+  color: darkgreen;
+}
+
+.empty{
+  background: black;
+  color: darkblue;
+}
+
+.soil{
+  background: black;
+  color: tan;
+}
+
+.rock {
+  background: black;
+  color: coral;
+}
+
+.door {
+    color: hotpink;
+}
+
+.tile:hover{
+}
+
+.entity {
+  background: transparent;
+}
+
+.flower{
+  color: hotpink;
+}

@@ -4,60 +4,33 @@ body{
   background: black;
   font-size: 16px;
   font-family: monospace;
-  /* overflow: hidden; */
 }
 
 #gameboard {
-  background: black;
   position: relative;
   width: 200px;
   height: 200px;
   margin: 0 auto;
 }
 
-.tile{
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* pointer-events: none; */
-  cursor: crosshair;
-  user-select: none;
+#inventory {
+    background: dimgrey;
+    width: 140px;
+    height: 300px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    padding: 10px;
+    color: white;
 }
 
-
-
-.wall {
-  background-color: black;
-  color: white;
+#inventory h3 {
+    margin-bottom: 0;
 }
 
-.grass {
-  background: black;
-  color: olive;
-}
-.empty{
-  background: black;
-  color: gray;
-}
-.soil{
-  background: black;
-  color: tan;
-}
-
-.rock{
-  background: black;
-  color: coral;
-}
-
-.player {
-    background: black;
-    color: cornflowerblue;
-    z-index: 5;
-    transition: all 0.1s ease-in-out;
-}
-
-.tile:hover{
+#inventory ul {
+    padding-left: 12px;
 }
 
 #info{
@@ -71,7 +44,7 @@ body{
   padding: 6px;
 }
 
-#info p, #info a {
+#info p, #info a, #warning p {
     display: inline-block;
     margin-right: 8px;
 }
@@ -85,16 +58,24 @@ body{
     color: yellow;
 }
 
-.not-valid {
-    color: red;
+#warning {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 6px;
+    color: orangered;
+    pointer-events: none;
+
+    animation-name: warningFade;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
 }
 
-.entity {
-    background: transparent;
-    border-radius: 10px;
-    z-index: 10;
-}
-
-.flower {
-    color: yellow;
+@keyframes warningFade{
+    0%      {opacity: 1}
+    65%     {opacity: 1}
+    100%    {opacity: 0}
 }

@@ -106,8 +106,6 @@ function spawnFlowers (num) {
 }
 
 
-
-
 //------------------------------------------------
 // Updating functions
 //------------------------------------------------
@@ -140,7 +138,7 @@ function movePlayer (dir) {
     }
 }
 
-function perTileMessage (x, y, validTile) {
+function perTileMessage (x, y) {
     let i = domGet("#info");
     i.textContent = "";
     let t = tileMap[y][x];
@@ -153,7 +151,22 @@ function perTileMessage (x, y, validTile) {
 function addToInventory (entity) {
     if (entity.domElem) entity.domElem.remove();
     playerInventory.push(entity);
-    perTileMessage(...playerPos)
+    perTileMessage(...playerPos);
+    let list = domGet("#inventory-list");
+    let li = domMake("li");
+    li.innerText = entity.type;
+    list.appendChild(li);
+}
+
+
+function blockMessage (message, duration = 2) {
+    let m = domGet("#warning");
+    if (m) m.remove();
+    let newMessage = domMake("p");
+    newMessage.id = "warning";
+    newMessage.innerHTML = `<p>${message}</p>`;
+    newMessage.style.animationDuration = duration + "s";
+    domGet("body").appendChild(newMessage);
 }
 
 //------------------------------------------------

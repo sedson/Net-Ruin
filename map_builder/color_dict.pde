@@ -6,5 +6,6 @@ StringDict buildColorTable () {
   table.set("54AF58", "Grass");
   table.set("0041E5", "Rock");
   table.set("E59281", "Soil");
+  table.set("FFCC00", "Door");
   return table;
 }
