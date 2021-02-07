@@ -25,13 +25,6 @@ const makeTile = (row, col, size) => {
 //------------------------------------------------
 // Constants for control
 //------------------------------------------------
-const DIRS = {
-    UP:     {row: -1, col:  0},
-    DOWN:   {row:  1, col:  0},
-    LEFT:   {row:  0, col:  1},
-    RIGHT:  {row:  0, col: -1}
-}
-
 const CONTROLS = {
     "ArrowLeft":    [0, -1],
     "ArrowRight":   [0,  1],
@@ -42,9 +35,10 @@ const CONTROLS = {
 // Size of the tiles on the DOM -- in pixels
 const TILE_SIZE = 20;
 
+
 //------------------------------------------------
-// Keeping a class to store positions -- this is more of a mental trick
-// to force me to think in terms of rows and cols not X and Y
+// Keeping a class to store positions
+// Basi
 //------------------------------------------------
 class Position {
     constructor(row, col) {
@@ -68,43 +62,46 @@ class Position {
 class Player {
     constructor(row, col, gameboard){
         this.pos = new Position(row, col);
-        this.gaameboard = gameboard;
-    }
+        this.gameboard = gameboard;
+        this.inventory = [];
 
-    inventory = [];
+        // making the dom element and storing a refernece to it
+        this.playerTile = makeTile(this.pos.row, this.pos.col, TILE_SIZE);
+        this.playerTile.id = "player";
+        this.playerTile.classList.add("player");
+        this.playerTile.innerText = "@";
+        dom.get("#gameboard").appendChild(this.playerTile);
+    }
 
     addToInventory(item){
         this.inventory.push(item);
     }
 
     tryMove (event) {
-        if(CONTROLS.hasOwnProperty(event.key) && ! event.shiftKey){
+        if (CONTROLS.hasOwnProperty(event.key)) {
+            // get the direction from the controls array -- use spread operator to pass array as args
             let movement = new Position(...CONTROLS[event.key]);
             let newPos = this.pos.add(movement);
-            let checkTile = gameboard.getTile(newPos, movement);
-            if (checkTile && checkTile.onPlayerTryEnter()) {
-                this.pos = newPos;
-                console.log(this.pos);
-                this.draw();
+            let newTile = this.gameboard.getTile(newPos);
+
+            // only try to do movement if the newTile in not null
+            // and will allow the player to enter
+            if (newTile && newTile.onPlayerTryEnter()) {
+                // check if the player is near the edge of the game board
+                // -- if they are -- shift the map, if not move
+                if(this.gameboard.isBoundaryTile(newPos)){
+                    this.gameboard.shift(movement);
+                } else {
+                    this.pos = newPos;
+                    this.draw();
+                }
             }
         }
     }
 
-    draw (offset = new Position(0,0)) {
-        let offsetPos = this.pos.subtract(offset);
-
-        let playerElement = dom.get("#player");
-        if (playerElement) {
-            playerElement.style.left =  (offsetPos.col * TILE_SIZE) + "px";
-            playerElement.style.top  =  (offsetPos.row * TILE_SIZE) + "px";
-        }
-        else {
-            playerElement = makeTile(offsetPos.row, offsetPos.col, TILE_SIZE);
-            playerElement.classList.add("player");
-            playerElement.innerText = "@";
-            playerElement.id = "player";
-            dom.get("#gameboard").appendChild(playerElement);
-        }
+    draw () {
+        this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
+        this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
     }
 }
 
@@ -142,26 +139,18 @@ class GameBoard {
         return pos.row >=0 && pos.col >=0 && pos.row < this.numRows && pos.col < this.numCols;
     }
 
-    getTile(pos, movement){
-        if(this.inBounds(pos)){
-            return this.tilemap.getTile(pos.row + this.offset.row, pos.col + this.offset.col);
-        } else {
-            // this.shift(movement.mult(1));
-            return null;
-        }
+    isBoundaryTile(pos){
+        return pos.row < 2 || pos.col < 2 || pos.row >= this.numRows - 2 || pos.col >= this.numCols - 2;
+    }
+
+    getTile(pos){
+        let tile = this.tilemap.getTile(pos.row + this.offset.row, pos.col + this.offset.col);
+        return this.inBounds(pos) ? tile : null;
     }
 
     shift(movement){
         this.offset = this.offset.add(movement);
         this.draw();
-    }
-
-
-    tryShift (event) {
-        if(CONTROLS.hasOwnProperty(event.key) && event.shiftKey){
-            let movement = new Position(...CONTROLS[event.key]);
-            this.shift(movement);
-        }
     }
 
     draw(){
@@ -266,12 +255,9 @@ function blockMessage (message, duration = 2) {
 // drawPlayer();
 
 const tileMap = new GameMap(MAP_DATA);
-const gameboard = new GameBoard(tileMap, 20, 20);
+const gameboard = new GameBoard(tileMap, 10, 20);
 gameboard.draw();
 const player = new Player(3, 3, gameboard);
-document.onkeydown = () => {
-    player.tryMove(event);
-    gameboard.tryShift(event);
-}
+document.onkeydown = () => { player.tryMove(event); }
 
 player.draw();
