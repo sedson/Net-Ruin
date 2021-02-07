@@ -11,9 +11,9 @@ class Tile {
     type = "";
     char = "";
 
-    onPlayerEnter () {
+    onPlayerEnter (player) {
         for(let entity of this.containedEntities){
-            entity.playerInteraction();
+            entity.playerInteraction(player);
         }
     }
 
@@ -32,11 +32,8 @@ class Tile {
 // Base Class
 //--------------------------
 class StaticBlockingTile extends Tile{
-    constructor (x, y) {
-        super(x, y);
-    }
     onPlayerTryEnter () {
-        blockMessage(this.type, 1);
+        GUI.blockMessage(this.type, 1);
         return false;
     }
 }
@@ -46,9 +43,6 @@ class StaticBlockingTile extends Tile{
 // hex: 000000
 //--------------------------
 class Empty extends StaticBlockingTile {
-    constructor(x, y) {
-        super(x , y);
-    }
     type = "empty";
     char = "#";
 }
@@ -58,9 +52,6 @@ class Empty extends StaticBlockingTile {
 // hex: E59281
 //--------------------------
 class Rock extends StaticBlockingTile {
-    constructor(x, y) {
-        super(x , y);
-    }
     type = "rock";
     char = "∩";
 }
@@ -70,10 +61,6 @@ class Rock extends StaticBlockingTile {
 // hex: E59281
 //--------------------------
 class Soil extends Tile {
-    constructor(x, y) {
-        super(x , y);
-    }
-
     onPlayerTryEnter () { return true; }
     type = "soil";
     char = "·";
@@ -84,10 +71,6 @@ class Soil extends Tile {
 // hex: 54AF58
 //--------------------------
 class Grass extends Tile {
-    constructor(x, y) {
-        super(x , y);
-    }
-
     onPlayerTryEnter () { return true; }
     type = "grass";
     char = "·";
@@ -98,14 +81,6 @@ class Grass extends Tile {
 // hex: FF0000
 //--------------------------
 class Wall extends StaticBlockingTile {
-    constructor(x, y) {
-        super(x , y);
-    }
-
-    onPlayerTryEnter () {
-        blockMessage(this.type, 1);
-        return false;
-    }
     type = "wall";
     char = "░░";
 }
@@ -115,16 +90,11 @@ class Wall extends StaticBlockingTile {
 // hex: FF0000
 //--------------------------
 class Door extends Tile {
-    constructor(x, y) {
-        super(x , y);
-    }
-
-    onPlayerTryEnter () {
-        let unlock = playerInventory.some(x => x.type === "flower");
-        if(! unlock) blockMessage("Need flower to unlock Door", 2.5);
+    onPlayerTryEnter (player) {
+        let unlock = player.inventory.some(x => x.type === "flower");
+        if(! unlock) GUI.blockMessage("Need flower to unlock Door", 2.5);
         return unlock;
     }
-
     type = "door";
     char = "█";
 }

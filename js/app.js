@@ -4,7 +4,7 @@
 const dom = {
     get:  x => document.querySelector(x),
     all:  x => document.querySelectorAll(x),
-    make: x => document.createElement(x)
+    make: x => document.createElement(x),
 }
 
 // using CSS styling to position elements
@@ -22,6 +22,15 @@ const makeTile = (row, col, size) => {
     return tile;
 }
 
+const makeEntity = (row, col, size, type, char, board) => {
+    let tile = dom.make("div");
+    tile.className = `tile entity ${type}`;
+    tile.innerText = char;
+    setSizeAndPos(tile, size, row, col);
+    dom.get("#gameboard").appendChild(tile);
+    return tile;
+}
+
 //------------------------------------------------
 // Constants for control
 //------------------------------------------------
@@ -33,8 +42,8 @@ const CONTROLS = {
 }
 
 // Size of the tiles on the DOM -- in pixels
-const TILE_SIZE = 20;
-
+const TILE_SIZE = 40;
+const randArr = arr => arr[Math.floor(Math.random() * arr.length)];
 
 //------------------------------------------------
 // Keeping a class to store positions
@@ -73,11 +82,15 @@ class Player {
         dom.get("#gameboard").appendChild(this.playerTile);
     }
 
-    addToInventory(item){
+    addToInventory (item) {
         this.inventory.push(item);
+        GUI.reset();
+        GUI.setTileInfo(this.gameboard.getTile(this.pos));
+        GUI.showInventory(this.inventory);
     }
 
     tryMove (event) {
+        GUI.reset();
         if (CONTROLS.hasOwnProperty(event.key)) {
             // get the direction from the controls array -- use spread operator to pass array as args
             let movement = new Position(...CONTROLS[event.key]);
@@ -86,7 +99,7 @@ class Player {
 
             // only try to do movement if the newTile in not null
             // and will allow the player to enter
-            if (newTile && newTile.onPlayerTryEnter()) {
+            if (newTile && newTile.onPlayerTryEnter(this)) {
                 // check if the player is near the edge of the game board
                 // -- if they are -- shift the map, if not move
                 if(this.gameboard.isBoundaryTile(newPos)){
@@ -96,6 +109,8 @@ class Player {
                     this.draw();
                 }
             }
+            gameboard.getTile(this.pos).onPlayerEnter(this);
+            GUI.setTileInfo(this.gameboard.getTile(this.pos));
         }
     }
 
@@ -114,6 +129,8 @@ class GameBoard {
         this.numCols = numCols;
         this.tilemap = tilemap;
         this.offset = new Position(0, 0);
+        this.boundarySize = 1;
+        this.tempTiles = [];
         this.displaytiles = this.makeTileArray();
     }
 
@@ -140,7 +157,8 @@ class GameBoard {
     }
 
     isBoundaryTile(pos){
-        return pos.row < 2 || pos.col < 2 || pos.row >= this.numRows - 2 || pos.col >= this.numCols - 2;
+        return pos.row < this.boundarySize || pos.col < this.boundarySize ||
+               pos.row >= this.numRows - this.boundarySize || pos.col >= this.numCols - this.boundarySize;
     }
 
     getTile(pos){
@@ -154,11 +172,22 @@ class GameBoard {
     }
 
     draw(){
+        this.tempTiles.forEach(x => x.remove());
+        this.tempTiles = [];
+
         for(let row = 0; row < this.numRows; row++) {
             for(let col = 0; col < this.numCols; col++) {
 
                 let dataTile = this.tilemap.getTile(row + this.offset.row, col + this.offset.col);
                 let domTile  = this.displaytiles[row][col];
+
+                if(dataTile.containedEntities.length > 0){
+                    for(let e of dataTile.containedEntities){
+                        let visE = makeEntity(row, col, TILE_SIZE, e.type, e.char, this);
+                        e.attachToDom(visE);
+                        this.tempTiles.push(visE);
+                    }
+                }
 
                 domTile.className = `tile ${dataTile.type}`;
                 domTile.innerText = dataTile.char;
@@ -172,35 +201,14 @@ class GameBoard {
 // Set up processes
 //------------------------------------------------
 
-
-function makeTileDiv (className, innerText, xPos, yPos, size) {
-    let tileDiv = dom.make("div");
-    tileDiv.className = `tile ${className}`;
-    tileDiv.innerText = innerText;
-    setSizeAndPos(tileDiv, size, xPos, yPos);
-    return tileDiv;
-}
-
-function makeEntityDiv (className, innerText, xPos, yPos, size) {
-    let tileDiv = dom.make("div");
-    tileDiv.className = `tile entity ${className}`;
-    tileDiv.innerText = innerText;
-    setSizeAndPos(tileDiv, size, xPos, yPos);
-    return tileDiv;
-}
-
-
-function spawnFlowers (num) {
+function spawnEntities (type, gamemap, num) {
     for(let i = 0; i < num; i++){
         let placed = false;
         while(! placed){
-            let randTile = randArr(randArr(tileMap));
-            if(randTile.onPlayerTryEnter() && randTile.containedEntities.length === 0) {
-                let flower = new Flower(randTile);
+            let randTile = randArr(randArr(gamemap.tiles));
+            if(randTile.containedEntities.length === 0) {
+                let flower = eval(`new ${type}(randTile)`);
                 randTile.containedEntities.push(flower);
-                let flowerDiv = makeEntityDiv(flower.type, flower.char, randTile.x, randTile.y, TILE_SIZE);
-                board.appendChild(flowerDiv);
-                flower.attachToDom(flowerDiv);
                 placed = true;
             }
         }
@@ -209,18 +217,47 @@ function spawnFlowers (num) {
 
 
 //------------------------------------------------
-// Updating functions
+// GUI Object
 //------------------------------------------------
+const GUI = {
+    reset: () => {
+        info.textContent= "";
+    },
 
+    setTileInfo: (tile) => {
+        let p = dom.make("p");
+        p.innerText = tile.type;
+        dom.get("#info").prepend(p);
+    },
 
-function perTileMessage (x, y) {
-    let i = dom.get("#info");
-    i.textContent = "";
-    let t = tileMap[y][x];
-    let p = dom.make("p");
-    p.innerText = t.type;
-    i.appendChild(p);
+    blockMessage: (message, duration = 2 ) => {
+        let m = dom.get("#warning");
+        if (m) m.remove();
+        let newMessage = dom.make("p");
+        newMessage.id = "warning";
+        newMessage.innerHTML = `<p>${message}</p>`;
+        newMessage.style.animationDuration = duration + "s";
+        dom.get("body").appendChild(newMessage);
+    },
+
+    addItemToInfo: function () {
+        let args = [...arguments];
+        args.forEach(x => {
+            console.log(x);
+            dom.get("#info").append(x);
+        });
+    },
+
+    showInventory: (itemArr) => {
+        let list = dom.get("#inventory-list");
+        list.textContent = "";
+        for(let item of itemArr){
+            list.innerHTML += (`<li>${item.type}</li>`)
+        }
+    }
 }
+
+
 
 function addToInventory (entity) {
     if (entity.domElem) entity.domElem.remove();
@@ -232,32 +269,18 @@ function addToInventory (entity) {
     list.appendChild(li);
 }
 
-
-function blockMessage (message, duration = 2) {
-    let m = dom.get("#warning");
-    if (m) m.remove();
-    let newMessage = dom.make("p");
-    newMessage.id = "warning";
-    newMessage.innerHTML = `<p>${message}</p>`;
-    newMessage.style.animationDuration = duration + "s";
-    dom.get("body").appendChild(newMessage);
-}
-
 //------------------------------------------------
 // Actually start the game
 //------------------------------------------------
-// domTiles = buildDomBoard();
-// tileMap = buildTileMap(MAP_DATA);
-// drawDomBoard(...[0,0]);
-// //spawnFlowers(9);
-// setDims();
-// playerPos = [3, 3];
-// drawPlayer();
 
 const tileMap = new GameMap(MAP_DATA);
-const gameboard = new GameBoard(tileMap, 10, 20);
+const gameboard = new GameBoard(tileMap, 20, 20);
+spawnEntities("Flower", tileMap, 200);
+spawnEntities("Clover", tileMap, 200);
 gameboard.draw();
+
 const player = new Player(3, 3, gameboard);
 document.onkeydown = () => { player.tryMove(event); }
+console.log(tileMap.tiles[1].filter(x => x.containedEntities.length > 0))
 
 player.draw();

@@ -13,29 +13,29 @@ class Entity {
     }
 }
 
-class Flower extends Entity {
-    constructor (tile) {
-        super(tile);
-    }
-    type = "flower"
-    char = "*";
+class PlantEntity extends Entity {
+    playerInteraction(player) {
+        let par = document.createElement("p");
+        par.innerText = ">";
+        let link = document.createElement("a");
+        link.innerText = this.type;
 
-    playerInteraction() {
-        let info = document.querySelector("#info");
-        let p = document.createElement("p");
-        p.innerText = ">";
-        let a = document.createElement("a");
-        a.innerText = this.type;
-
-        a.addEventListener("click", () => {
-            addToInventory(this);
-            log(this);
+        link.addEventListener("click", () => {
+            player.addToInventory(this);
             this.parentTile.removeEnity(this);
+            this.domElem.remove();
         });
 
-        info.appendChild(p);
-        info.appendChild(a);
+        GUI.addItemToInfo(par, link);
     }
+}
 
+class Flower extends PlantEntity {
+    type = "flower"
+    char = "*";
+}
 
+class Clover extends PlantEntity {
+    type = "clover"
+    char = "♣";
 }
