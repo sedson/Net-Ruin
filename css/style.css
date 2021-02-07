@@ -4,6 +4,7 @@ body{
   background: black;
   font-size: 16px;
   font-family: monospace;
+  overflow: hidden;
 }
 
 #gameboard {
@@ -11,6 +12,7 @@ body{
   width: 200px;
   height: 200px;
   margin: 0 auto;
+  background: pink;
 }
 
 #inventory {

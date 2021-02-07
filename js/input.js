@@ -1,6 +1,6 @@
 // Events -- load after app.js
 
-document.onkeydown = checkKey;
+//document.onkeydown = checkKey;
 
 function checkKey(event) {
     switch (event.key) {

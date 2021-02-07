@@ -1,11 +1,13 @@
 .tile{
   position: absolute;
+  background: ;
   display: flex;
   justify-content: center;
   align-items: center;
   /* pointer-events: none; */
   cursor: crosshair;
   user-select: none;
+  transition: all 1s;
 }
 
 .player {
@@ -41,6 +43,7 @@
 }
 
 .door {
+    background: black;
     color: hotpink;
 }
 
