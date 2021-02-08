@@ -1,6 +1,16 @@
+const SPAWN_TABLE = {
+    soil: [
+        { entity: "Flower", spawnRate: 10 }
+    ],
+    grass: [
+        { entity: "Clover", spawnRate: 10 }
+    ]
+}
+
 class Entity {
     constructor (tile) {
         this.parentTile = tile;
+        this.domElems = [];
     }
     playerInteraction() {
 
@@ -9,7 +19,7 @@ class Entity {
     char = "";
 
     attachToDom(domElem) {
-        this.domElem = domElem;
+        this.domElems.push(domElem)
     }
 }
 
@@ -19,11 +29,13 @@ class PlantEntity extends Entity {
         par.innerText = ">";
         let link = document.createElement("a");
         link.innerText = this.type;
+        this.attachToDom(par);
+        this.attachToDom(link);
 
         link.addEventListener("click", () => {
             player.addToInventory(this);
             this.parentTile.removeEnity(this);
-            this.domElem.remove();
+            this.domElems.forEach(x => x.remove());
         });
 
         GUI.addItemToInfo(par, link);
@@ -37,5 +49,5 @@ class Flower extends PlantEntity {
 
 class Clover extends PlantEntity {
     type = "clover"
-    char = "♣";
+    char = '"';
 }

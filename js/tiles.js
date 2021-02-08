@@ -29,7 +29,7 @@ class Tile {
 }
 
 //--------------------------
-// Base Class
+// a blocking base class
 //--------------------------
 class StaticBlockingTile extends Tile{
     onPlayerTryEnter () {
@@ -38,57 +38,33 @@ class StaticBlockingTile extends Tile{
     }
 }
 
-//--------------------------
-// Empty tile
-// hex: 000000
-//--------------------------
 class Empty extends StaticBlockingTile {
     type = "empty";
     char = "#";
 }
 
-//--------------------------
-// Rock tile
-// hex: E59281
-//--------------------------
 class Rock extends StaticBlockingTile {
     type = "rock";
     char = "∩";
 }
 
-//--------------------------
-// Soil tile
-// hex: E59281
-//--------------------------
 class Soil extends Tile {
     onPlayerTryEnter () { return true; }
     type = "soil";
     char = "·";
 }
 
-//--------------------------
-// Grass tile
-// hex: 54AF58
-//--------------------------
 class Grass extends Tile {
     onPlayerTryEnter () { return true; }
     type = "grass";
-    char = "·";
+    char = ".";
 }
 
-//--------------------------
-// Wall tile
-// hex: FF0000
-//--------------------------
 class Wall extends StaticBlockingTile {
     type = "wall";
     char = "░░";
 }
 
-//--------------------------
-// Wall tile
-// hex: FF0000
-//--------------------------
 class Door extends Tile {
     onPlayerTryEnter (player) {
         let unlock = player.inventory.some(x => x.type === "flower");

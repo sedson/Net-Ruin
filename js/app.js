@@ -46,8 +46,8 @@ const TILE_SIZE = 40;
 const randArr = arr => arr[Math.floor(Math.random() * arr.length)];
 
 //------------------------------------------------
-// Keeping a class to store positions
-// Basi
+// Keeping a class to store [row, col] positions and clear a bit of repeated code
+// could have done with arrays
 //------------------------------------------------
 class Position {
     constructor(row, col) {
@@ -84,14 +84,12 @@ class Player {
 
     addToInventory (item) {
         this.inventory.push(item);
-        GUI.reset();
-        GUI.setTileInfo(this.gameboard.getTile(this.pos));
         GUI.showInventory(this.inventory);
     }
 
     tryMove (event) {
-        GUI.reset();
         if (CONTROLS.hasOwnProperty(event.key)) {
+            GUI.reset(); // reset GUI at beggining of update
             // get the direction from the controls array -- use spread operator to pass array as args
             let movement = new Position(...CONTROLS[event.key]);
             let newPos = this.pos.add(movement);
@@ -110,6 +108,7 @@ class Player {
                 }
             }
             gameboard.getTile(this.pos).onPlayerEnter(this);
+
             GUI.setTileInfo(this.gameboard.getTile(this.pos));
         }
     }
@@ -121,95 +120,19 @@ class Player {
 }
 
 //------------------------------------------------
-// Gameboard Class
-//------------------------------------------------
-class GameBoard {
-    constructor(tilemap, numRows, numCols){
-        this.numRows = numRows;
-        this.numCols = numCols;
-        this.tilemap = tilemap;
-        this.offset = new Position(0, 0);
-        this.boundarySize = 1;
-        this.tempTiles = [];
-        this.displaytiles = this.makeTileArray();
-    }
-
-    makeTileArray() {
-        let arr = [];
-        let gameBoardElement = dom.get("#gameboard");
-        gameBoardElement.style.width  = this.numCols * TILE_SIZE + "px";
-        gameBoardElement.style.height = this.numRows * TILE_SIZE + "px";
-
-        for(let row = 0; row < this.numRows; row++){
-            let rowArr = [];
-            for(let col = 0; col < this.numCols; col++){
-                let tile = makeTile(row, col, TILE_SIZE);
-                gameBoardElement.appendChild(tile);
-                rowArr.push(tile);
-            }
-            arr.push(rowArr);
-        }
-        return arr;
-    }
-
-    inBounds(pos){
-        return pos.row >=0 && pos.col >=0 && pos.row < this.numRows && pos.col < this.numCols;
-    }
-
-    isBoundaryTile(pos){
-        return pos.row < this.boundarySize || pos.col < this.boundarySize ||
-               pos.row >= this.numRows - this.boundarySize || pos.col >= this.numCols - this.boundarySize;
-    }
-
-    getTile(pos){
-        let tile = this.tilemap.getTile(pos.row + this.offset.row, pos.col + this.offset.col);
-        return this.inBounds(pos) ? tile : null;
-    }
-
-    shift(movement){
-        this.offset = this.offset.add(movement);
-        this.draw();
-    }
-
-    draw(){
-        this.tempTiles.forEach(x => x.remove());
-        this.tempTiles = [];
-
-        for(let row = 0; row < this.numRows; row++) {
-            for(let col = 0; col < this.numCols; col++) {
-
-                let dataTile = this.tilemap.getTile(row + this.offset.row, col + this.offset.col);
-                let domTile  = this.displaytiles[row][col];
-
-                if(dataTile.containedEntities.length > 0){
-                    for(let e of dataTile.containedEntities){
-                        let visE = makeEntity(row, col, TILE_SIZE, e.type, e.char, this);
-                        e.attachToDom(visE);
-                        this.tempTiles.push(visE);
-                    }
-                }
-
-                domTile.className = `tile ${dataTile.type}`;
-                domTile.innerText = dataTile.char;
-            }
-        }
-    }
-}
-
-
-//------------------------------------------------
 // Set up processes
 //------------------------------------------------
-
-function spawnEntities (type, gamemap, num) {
-    for(let i = 0; i < num; i++){
-        let placed = false;
-        while(! placed){
-            let randTile = randArr(randArr(gamemap.tiles));
-            if(randTile.containedEntities.length === 0) {
-                let flower = eval(`new ${type}(randTile)`);
-                randTile.containedEntities.push(flower);
-                placed = true;
+function spawnEntities (gameboard) {
+    for(let row of gameboard.tilemap.tiles){
+        for(let tile of row) {
+            // look to see if any of the enitities should spawn here
+            if(SPAWN_TABLE.hasOwnProperty(tile.type)){
+                for (let potSpawn of SPAWN_TABLE[tile.type]){
+                    let rand = Math.random() * 100;
+                    if(rand < potSpawn.spawnRate){
+                        tile.containedEntities.push(eval(`new ${potSpawn.entity}(tile)`));
+                    }
+                }
             }
         }
     }
@@ -241,9 +164,7 @@ const GUI = {
     },
 
     addItemToInfo: function () {
-        let args = [...arguments];
-        args.forEach(x => {
-            console.log(x);
+        [...arguments].forEach(x => {
             dom.get("#info").append(x);
         });
     },
@@ -257,30 +178,15 @@ const GUI = {
     }
 }
 
-
-
-function addToInventory (entity) {
-    if (entity.domElem) entity.domElem.remove();
-    playerInventory.push(entity);
-    perTileMessage(...playerPos);
-    let list = dom.get("#inventory-list");
-    let li = dom.make("li");
-    li.innerText = entity.type;
-    list.appendChild(li);
-}
-
 //------------------------------------------------
 // Actually start the game
 //------------------------------------------------
 
-const tileMap = new GameMap(MAP_DATA);
-const gameboard = new GameBoard(tileMap, 20, 20);
-spawnEntities("Flower", tileMap, 200);
-spawnEntities("Clover", tileMap, 200);
+const gameboard = new GameBoard(MAP_DATA, 12, 20);
+spawnEntities(gameboard);
 gameboard.draw();
 
 const player = new Player(3, 3, gameboard);
 document.onkeydown = () => { player.tryMove(event); }
-console.log(tileMap.tiles[1].filter(x => x.containedEntities.length > 0))
 
 player.draw();

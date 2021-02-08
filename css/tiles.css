@@ -8,6 +8,7 @@
   cursor: crosshair;
   user-select: none;
   font-size: 32px;
+  font-weight: bold;
 }
 
 .player {
@@ -24,12 +25,12 @@
 
 .grass {
   background: black;
-  color: darkgreen;
+  color: rgb(30, 30, 30);
 }
 
 .empty{
   background: black;
-  color: darkblue;
+  color: purple;
 }
 
 .soil{
@@ -39,7 +40,7 @@
 
 .rock {
   background: black;
-  color: coral;
+  color: seashell;
 }
 
 .door {
