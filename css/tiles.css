@@ -12,15 +12,18 @@
 }
 
 .player {
-    background: black;
+    background: transparent;
     color: yellow;
-    z-index: 5;
+    z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
 .wall {
+    font-family: "SPRITES", monospace;
+    font-weight: normal;
+    font-size: 40px;
   background-color: black;
-  color: gray;
+  color: dimgray;
 }
 
 .grass {
@@ -34,8 +37,8 @@
 }
 
 .soil{
-  background: black;
-  color: tan;
+  background: darkred;
+  color: transparent;
 }
 
 .rock {
@@ -53,13 +56,20 @@
 
 .entity {
   background: transparent;
-  z-index: 10;
+  z-index: 2;
 }
 
 .flower{
+font-family: "SPRITES", monospace;
+font-weight: normal;
+
   color: hotpink;
 }
 
 .clover{
     color: yellowgreen;
+}
+
+.terminal {
+    color: cornflowerblue;
 }

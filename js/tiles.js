@@ -62,7 +62,8 @@ class Grass extends Tile {
 
 class Wall extends StaticBlockingTile {
     type = "wall";
-    char = "░░";
+    // char = "░░";
+    char = "W";
 }
 
 class Door extends Tile {

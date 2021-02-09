@@ -3,7 +3,8 @@ const SPAWN_TABLE = {
         { entity: "Flower", spawnRate: 10 }
     ],
     grass: [
-        { entity: "Clover", spawnRate: 10 }
+        { entity: "Clover", spawnRate: 10 },
+        { entity: "Terminal", spawnRate: 10 }
     ]
 }
 
@@ -44,10 +45,18 @@ class PlantEntity extends Entity {
 
 class Flower extends PlantEntity {
     type = "flower"
-    char = "*";
+    char = "F";
 }
 
 class Clover extends PlantEntity {
     type = "clover"
     char = '"';
+}
+
+class Terminal extends Entity {
+    type = "terminal"
+    char = "T"
+    playerInteraction(){
+        dialog.setMessages("Welcome...", "Stay a while...");
+    }
 }

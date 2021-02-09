@@ -9,8 +9,9 @@ const dom = {
 
 // using CSS styling to position elements
 const setSizeAndPos = (elem, size, row, col) => {
-    elem.style.left   = col * size + "px";
-    elem.style.top    = row * size + "px";
+    // elem.style.left   = col * size + "px";
+    // elem.style.top    = row * size + "px";
+    elem.style.transform = `translate(${col * size}px, ${row * size}px)`;
     elem.style.width  = size + "px";
     elem.style.height = size + "px";
 }
@@ -35,10 +36,14 @@ const makeEntity = (row, col, size, type, char, board) => {
 // Constants for control
 //------------------------------------------------
 const CONTROLS = {
-    "ArrowLeft":    [0, -1],
-    "ArrowRight":   [0,  1],
-    "ArrowUp":      [-1, 0],
-    "ArrowDown":    [ 1, 0]
+    "arrowleft":    [0, -1],
+    "arrowright":   [0,  1],
+    "arrowup":      [-1, 0],
+    "arrowdown":    [ 1, 0],
+    "w":            [-1, 0],
+    "a":            [0, -1],
+    "s":            [1,  0],
+    "d":            [0,  1]
 }
 
 // Size of the tiles on the DOM -- in pixels
@@ -88,10 +93,11 @@ class Player {
     }
 
     tryMove (event) {
-        if (CONTROLS.hasOwnProperty(event.key)) {
+        let key = event.key.toLowerCase();
+        if (CONTROLS.hasOwnProperty(key)) {
             GUI.reset(); // reset GUI at beggining of update
             // get the direction from the controls array -- use spread operator to pass array as args
-            let movement = new Position(...CONTROLS[event.key]);
+            let movement = new Position(...CONTROLS[key]);
             let newPos = this.pos.add(movement);
             let newTile = this.gameboard.getTile(newPos);
 
@@ -114,8 +120,9 @@ class Player {
     }
 
     draw () {
-        this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
-        this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
+        this.playerTile.style.transform = `translate(${this.pos.col * TILE_SIZE}px, ${this.pos.row * TILE_SIZE}px)`
+        // this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
+        // this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
     }
 }
 
@@ -190,3 +197,4 @@ const player = new Player(3, 3, gameboard);
 document.onkeydown = () => { player.tryMove(event); }
 
 player.draw();
+const dialog = new Dialog(dom.get("#dialog"), dom.get("#dialog-message"), dom.get("#dialog-next"));

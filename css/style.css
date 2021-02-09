@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
+@font-face {
+  font-family: "SPRITES";
+  src: url("/Users/seamusedson/Desktop/FONTFILES/SPRITES.woff") format("woff");
+}
 
 body{
   background: black;
@@ -80,4 +84,40 @@ body{
     0%      {opacity: 1}
     65%     {opacity: 1}
     100%    {opacity: 0}
+}
+
+.cover {
+    background: rgba(255, 0, 255, 0.4);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    z-index: 20;
+    top: 0;
+    left: 0;
+}
+
+#dialog {
+    width: 400px;
+    height: 100;
+    padding: 20px;
+    background-color: black;
+    border: 2px solid silver;
+    display: none;
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    color: silver;
+    z-index: 3;
+}
+
+#dialog-next {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+#dialog-next:hover{
+    border-bottom: 2px solid black;
 }
