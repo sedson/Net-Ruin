@@ -38,9 +38,10 @@ class StaticBlockingTile extends Tile{
     }
 }
 
-class Empty extends StaticBlockingTile {
-    type = "empty";
-    char = "#";
+class Void extends Tile {
+    type = "void";
+    char = "";
+    onPlayerTryEnter () { return true; }
 }
 
 class Rock extends StaticBlockingTile {
@@ -51,7 +52,13 @@ class Rock extends StaticBlockingTile {
 class Soil extends Tile {
     onPlayerTryEnter () { return true; }
     type = "soil";
-    char = "·";
+    char = "D";
+}
+
+class Sand extends Tile {
+    onPlayerTryEnter () { return true; }
+    type = "sand";
+    char = "D";
 }
 
 class Grass extends Tile {
@@ -65,13 +72,35 @@ class Wall extends StaticBlockingTile {
     // char = "░░";
     char = "W";
 }
+class TradingPost extends Tile {
+    type = "trading post";
+    char = "░░";
+    onPlayerTryEnter(){
+
+        return true;
+    }
+    onPlayerEnter(player){
+        super.onPlayerEnter(player);
+        tradingPostGUI.show();
+    }
+}
 
 class Door extends Tile {
     onPlayerTryEnter (player) {
-        let unlock = player.inventory.some(x => x.type === "flower");
-        if(! unlock) GUI.blockMessage("Need flower to unlock Door", 2.5);
+        let unlock = player.inventory.some(x => x.type ==="AccessCard");
+        if(! unlock) GUI.blockMessage("ACCESS DENIED: this door requires an AccessCard", 2.5);
         return unlock;
     }
     type = "door";
-    char = "█";
+    // char = "█";
+    char = "E";
+}
+
+class Guide extends Tile {
+    onPlayerTryEnter (player) { return true; }
+    onPlayerEnter(){
+        dialog.setMessages("Welcome to the rotting temple...")
+    }
+    type = "guide";
+    char = "O";
 }

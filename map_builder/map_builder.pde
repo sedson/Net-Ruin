@@ -30,7 +30,7 @@ void setup(){
     for(int j = 0; j < img.width; j++){
       // convert the pixel into hex string
       String hexVal = hex(img.get(j, i), 6);
-      line += lookUpTable.hasKey(hexVal) ? "\"" + lookUpTable.get(hexVal) + "\"" : "\"Empty\"";
+      line += lookUpTable.hasKey(hexVal) ? "\"" + lookUpTable.get(hexVal) + "\"" : "\"Void\"";
       if(j < img.width - 1) line += ",";
     }
     line += "]"; // close the internal array

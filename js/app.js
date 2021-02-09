@@ -78,6 +78,7 @@ class Player {
         this.pos = new Position(row, col);
         this.gameboard = gameboard;
         this.inventory = [];
+        this.movementLocked = false;
 
         // making the dom element and storing a refernece to it
         this.playerTile = makeTile(this.pos.row, this.pos.col, TILE_SIZE);
@@ -93,29 +94,33 @@ class Player {
     }
 
     tryMove (event) {
-        let key = event.key.toLowerCase();
-        if (CONTROLS.hasOwnProperty(key)) {
-            GUI.reset(); // reset GUI at beggining of update
-            // get the direction from the controls array -- use spread operator to pass array as args
-            let movement = new Position(...CONTROLS[key]);
-            let newPos = this.pos.add(movement);
-            let newTile = this.gameboard.getTile(newPos);
+        if(! this.movementLocked){
+            let key = event.key.toLowerCase();
+            if (CONTROLS.hasOwnProperty(key)) {
+                GUI.reset(); // reset GUI at beggining of update
+                // get the direction from the controls array -- use spread operator to pass array as args
+                let movement = new Position(...CONTROLS[key]);
+                let newPos = this.pos.add(movement);
+                let newTile = this.gameboard.getTile(newPos);
 
-            // only try to do movement if the newTile in not null
-            // and will allow the player to enter
-            if (newTile && newTile.onPlayerTryEnter(this)) {
-                // check if the player is near the edge of the game board
-                // -- if they are -- shift the map, if not move
-                if(this.gameboard.isBoundaryTile(newPos)){
-                    this.gameboard.shift(movement);
-                } else {
-                    this.pos = newPos;
-                    this.draw();
+                // only try to do movement if the newTile in not null
+                // and will allow the player to enter
+                if (newTile && newTile.onPlayerTryEnter(this)) {
+                    // check if the player is near the edge of the game board
+                    // -- if they are -- shift the map, if not move
+                    if(this.gameboard.isBoundaryTile(newPos)){
+                        this.gameboard.shift(movement);
+                    } else {
+                        this.pos = newPos;
+                        this.draw();
+                    }
                 }
-            }
-            gameboard.getTile(this.pos).onPlayerEnter(this);
+                gameboard.getTile(this.pos).onPlayerEnter(this);
 
-            GUI.setTileInfo(this.gameboard.getTile(this.pos));
+                GUI.setTileInfo(this.gameboard.getTile(this.pos));
+                let coords = this.pos.add(this.gameboard.offset);
+                GUI.setCoords(coords.col, coords.row);
+            }
         }
     }
 
@@ -123,6 +128,25 @@ class Player {
         this.playerTile.style.transform = `translate(${this.pos.col * TILE_SIZE}px, ${this.pos.row * TILE_SIZE}px)`
         // this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
         // this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
+    }
+
+    validateTrade (trade) {
+        return this.getNum(trade.input) >= trade.quantity;
+    }
+
+    makeTrade (trade) {
+        if(this.validateTrade(trade)){
+            for(let i = 0; i < trade.quantity; i++){
+                this.inventory.splice(this.inventory.findIndex(x => x.type == trade.input), 1);
+            }
+            this.inventory.push({type: `${trade.output}`});
+            GUI.showInventory(this.inventory);
+            trade.accepted = true;
+        }
+    }
+
+    getNum (item) {
+        return this.inventory.filter(x => x.type === item).length;
     }
 }
 
@@ -157,6 +181,14 @@ const GUI = {
     setTileInfo: (tile) => {
         let p = dom.make("p");
         p.innerText = tile.type;
+        dom.get("#info").prepend(p);
+    },
+
+    setCoords: (x, y) =>{
+        let p = dom.make("p");
+        p.innerText = `LOC: ${x}, ${y}`
+        p.style.color = "var(--mid2)"
+        dom.get("#info").prepend(dom.make("br"));
         dom.get("#info").prepend(p);
     },
 
@@ -198,3 +230,4 @@ document.onkeydown = () => { player.tryMove(event); }
 
 player.draw();
 const dialog = new Dialog(dom.get("#dialog"), dom.get("#dialog-message"), dom.get("#dialog-next"));
+const tradingPostGUI = new TradingPostGUI();

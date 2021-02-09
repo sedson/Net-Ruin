@@ -16,6 +16,7 @@ class Dialog {
         this.letterIndex = 0;
         this.container.style.display = "block"
         this.typeMessage();
+        player.movementLocked = true;
     }
 
     typeMessage(){
@@ -38,6 +39,7 @@ class Dialog {
                 this.typeMessage();
             } else {
                 this.container.style.display = "none";
+                player.movementLocked = false;
             }
         }
     }

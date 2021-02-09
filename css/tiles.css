@@ -5,15 +5,13 @@
   justify-content: center;
   align-items: center;
   /* pointer-events: none; */
-  cursor: crosshair;
   user-select: none;
   font-size: 32px;
-  font-weight: bold;
 }
 
 .player {
     background: transparent;
-    color: yellow;
+    color: var(--light);
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
@@ -22,33 +20,36 @@
     font-family: "SPRITES", monospace;
     font-weight: normal;
     font-size: 40px;
-  background-color: black;
-  color: dimgray;
+    color: var(--mid);
 }
 
 .grass {
-  background: black;
-  color: rgb(30, 30, 30);
+  color: var(--mid);
 }
 
 .empty{
-  background: black;
-  color: purple;
+  color: black;
 }
 
 .soil{
-  background: darkred;
-  color: transparent;
+    font-family: "SPRITES", monospace;
+  color: tan;
+}
+.sand{
+    font-family: "SPRITES", monospace;
+  color: var(--mid);
 }
 
+
 .rock {
-  background: black;
-  color: seashell;
+  color: var(--mid);
 }
 
 .door {
-    background: black;
-    color: hotpink;
+    font-family: "SPRITES", monospace;
+    font-size: 40px;
+
+    color: var(--mid2);
 }
 
 .tile:hover{
@@ -60,16 +61,20 @@
 }
 
 .flower{
-font-family: "SPRITES", monospace;
-font-weight: normal;
-
-  color: hotpink;
+    font-family: "SPRITES", monospace;
+    font-weight: normal;
+    color: coral;
 }
 
 .clover{
-    color: yellowgreen;
+    font-family: "SPRITES", monospace;
+    color: darkgreen;
 }
 
-.terminal {
+.trading {
     color: cornflowerblue;
+}
+
+.guide {
+    color: teal;
 }

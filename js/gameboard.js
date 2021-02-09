@@ -1,6 +1,6 @@
 //------------------------------------------------
 // Gameboard class
-// stores the tileMap containing all the tiles 
+// stores the tileMap containing all the tiles
 //------------------------------------------------
 class GameBoard {
     constructor(tileData, numRows, numCols){
@@ -93,7 +93,7 @@ class TileMap {
     }
 
     getTile(row, col) {
-        return this.inBounds(row, col) ? this.tiles[row][col] : new Empty(-1,-1);
+        return this.inBounds(row, col) ? this.tiles[row][col] : new Void(-1,-1);
     }
 
     // method to build an array of Tile Objects from an array of strings

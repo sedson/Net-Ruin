@@ -1,14 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
+
 @font-face {
   font-family: "SPRITES";
   src: url("/Users/seamusedson/Desktop/FONTFILES/SPRITES.woff") format("woff");
 }
+@font-face {
+  font-family: 'Space Mono';
+  src: url("../SpaceMono-Regular.ttf") format("truetype");
+}
 
+/* Colors */
+:root{
+    --dark: #26292B;
+    --mid: #4f5d54;
+    --mid2: #748c79;
+    --light: #afd6b3;
+    --darkAlt: #195faf;
+}
+
+/* reset margins and padding  */
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
 body{
-  background: black;
-  font-size: 16px;
-  font-family: monospace;
+  background: var(--dark);
+  font-family: 'Space Mono', monospace;
   overflow: hidden;
+  padding: 20px;
 }
 
 #gameboard {
@@ -16,19 +36,15 @@ body{
   width: 200px;
   height: 200px;
   margin: 0 20;
-  background: pink;
+  border: 2px solid var(--mid);
 }
 
 #inventory {
-    background: purple;
-    width: 140px;
-    height: 300px;
-    position: fixed;
     right: 0;
     bottom: 0;
     font-size: 16px;
     padding: 10px;
-    color: white;
+    color: var(--light);
 }
 
 #inventory h3 {
@@ -40,12 +56,8 @@ body{
 }
 
 #info{
-  position: fixed;
   width: 100%;
-  bottom: 0;
-  left: 0;
-  background-color: black;
-  color: white;
+  color: var(--light);
   margin: 0;
   padding: 6px;
 }
@@ -56,8 +68,8 @@ body{
 }
 
 #info a {
-    text-decoration: underline;
-    cursor: pointer;;
+    cursor: pointer;
+    border-bottom: 2px solid var(--light);
 }
 
 #info a:hover{
@@ -65,14 +77,9 @@ body{
 }
 
 #warning {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: black;
-    color: white;
     margin: 0;
     padding: 6px;
-    color: orangered;
+    color: coral;
     pointer-events: none;
 
     animation-name: warningFade;
@@ -87,7 +94,7 @@ body{
 }
 
 .cover {
-    background: rgba(255, 0, 255, 0.4);
+    background: rgba(0, 0, 255, 0.1);
     width: 100%;
     height: 100%;
     position: fixed;
@@ -97,20 +104,55 @@ body{
     left: 0;
 }
 
-#dialog {
+#dialog, #trade {
     width: 400px;
-    height: 100;
+    height: 100px;
     padding: 20px;
-    background-color: black;
-    border: 2px solid silver;
+    background-color: var(--dark);
+    border: 2px solid var(--light);
     display: none;
-    position: fixed;
-    left: 50vw;
-    top: 50vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
-    color: silver;
+    color: var(--light);
     z-index: 3;
+    user-select: none;
 }
+
+#trade {
+    display: none;
+    height: 200px;
+    background: var(--dark);
+    padding-top: 10px;
+}
+
+#trade em {
+    background: var(--light);
+    color: var(--dark);
+    padding: 0 0.5em;
+    border-radius: 8px;
+}
+#trade h2 {
+    margin-bottom: 8px;
+    letter-spacing: 0.2em;
+    font-weight: normal;
+    font-size: 24px;
+}
+
+#trade-close{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 30px;
+}
+#trade-close:hover{
+    cursor: pointer;
+    color: red;
+}
+
 
 #dialog-next {
     position: absolute;
@@ -119,5 +161,51 @@ body{
 }
 
 #dialog-next:hover{
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--light);
+    cursor: pointer;
+}
+
+#trade .nav, #trade.accepted .nav{
+    position: absolute;
+    color: var(--light);
+
+    bottom: 20px;
+    left: 20px;
+    text-decoration: none;
+}
+
+#trade .nav a{
+    margin-right: 20px;
+}
+
+#trade .nav a:hover{
+    border-bottom: 2px solid var(--light);
+    cursor: pointer;
+}
+
+#trade-accept{
+    background: var(--darkAlt);
+    display: inline-block;
+    margin: 10px auto;
+    padding: 6px 20px;
+}
+
+#trade-accept:hover{
+    background: yellowgreen;
+    color: var(--dark);
+    cursor: pointer;
+}
+
+#trade-accept.invalid{
+    background: darkgoldenrod;
+    cursor: pointer;
+}
+#trade.accepted em{
+    background: var(--mid);
+    text-decoration: line-through;
+}
+
+.accepted p {
+    color: var(--mid);
+    text-decoration: line-through;
 }

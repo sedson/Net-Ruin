@@ -1,20 +1,14 @@
-const SPAWN_TABLE = {
-    soil: [
-        { entity: "Flower", spawnRate: 10 }
-    ],
-    grass: [
-        { entity: "Clover", spawnRate: 10 },
-        { entity: "Terminal", spawnRate: 10 }
-    ]
-}
-
 class Entity {
     constructor (tile) {
         this.parentTile = tile;
         this.domElems = [];
     }
-    playerInteraction() {
-
+    playerInteraction(player) {
+        let par = document.createElement("p");
+        par.innerText = ">";
+        let par2 = document.createElement("p");
+        par2.innerText = this.type;
+        GUI.addItemToInfo(par, par2);
     }
     type = "";
     char = "";
@@ -50,13 +44,14 @@ class Flower extends PlantEntity {
 
 class Clover extends PlantEntity {
     type = "clover"
-    char = '"';
+    char = 'F';
 }
 
 class Terminal extends Entity {
     type = "terminal"
     char = "T"
-    playerInteraction(){
+    playerInteraction(player){
+        super.playerInteraction(player);
         dialog.setMessages("Welcome...", "Stay a while...");
     }
 }
