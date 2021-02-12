@@ -10,7 +10,7 @@ class GameBoard {
         this.numCols = numCols;
 
         this.offset = new Position(0, 0);
-        this.boundarySize = 1;
+        this.boundarySize = 3;
         this.tempTiles = [];
         this.displaytiles = this.makeTileArray();
     }
@@ -19,6 +19,7 @@ class GameBoard {
         let arr = [];
         let gameBoardElement = dom.get("#gameboard");
         gameBoardElement.style.width  = this.numCols * TILE_SIZE + "px";
+        dom.get("body").style.width   = this.numCols * TILE_SIZE + "px";
         gameBoardElement.style.height = this.numRows * TILE_SIZE + "px";
 
         for(let row = 0; row < this.numRows; row++){

@@ -13,8 +13,8 @@ class Entity {
     type = "";
     char = "";
 
-    attachToDom(domElem) {
-        this.domElems.push(domElem)
+    attachToDom() {
+        [...arguments].forEach(item => this.domElems.push(item));
     }
 }
 
@@ -22,10 +22,14 @@ class PlantEntity extends Entity {
     playerInteraction(player) {
         let par = document.createElement("p");
         par.innerText = ">";
+        let par2 = dom.make("p");
+        par2.className = `${this.type}`
+        let par3 = dom.make("p");
+        par3.innerText = this.type;
+        par2.innerText = this.char;
         let link = document.createElement("a");
-        link.innerText = this.type;
-        this.attachToDom(par);
-        this.attachToDom(link);
+        link.innerText = "Pick Up";
+
 
         link.addEventListener("click", () => {
             player.addToInventory(this);
@@ -33,18 +37,19 @@ class PlantEntity extends Entity {
             this.domElems.forEach(x => x.remove());
         });
 
-        GUI.addItemToInfo(par, link);
+        this.attachToDom(par, par2, par3, link);
+        GUI.addItemToInfo(par, par2, par3, link);
     }
 }
 
 class Flower extends PlantEntity {
     type = "flower"
-    char = "F";
+    char = "*";
 }
 
-class Clover extends PlantEntity {
-    type = "clover"
-    char = 'F';
+class Gem extends PlantEntity {
+    type = "gem"
+    char = "♦";
 }
 
 class Terminal extends Entity {

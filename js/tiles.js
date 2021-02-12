@@ -44,21 +44,33 @@ class Void extends Tile {
     onPlayerTryEnter () { return true; }
 }
 
-class Rock extends StaticBlockingTile {
-    type = "rock";
-    char = "∩";
+class Ruin extends StaticBlockingTile {
+    type = "ruin";
+    char = "╪╪";
+}
+
+class Sludge extends Tile {
+    onPlayerTryEnter () { return true; }
+    type = "sludge";
+    char = "~";
 }
 
 class Soil extends Tile {
     onPlayerTryEnter () { return true; }
     type = "soil";
-    char = "D";
+    char = "·";
 }
 
 class Sand extends Tile {
     onPlayerTryEnter () { return true; }
     type = "sand";
-    char = "D";
+    char = "ˆ";
+}
+
+class Path extends Tile {
+    onPlayerTryEnter () { return true; }
+    type = "path";
+    char = "●";
 }
 
 class Grass extends Tile {
@@ -69,38 +81,48 @@ class Grass extends Tile {
 
 class Wall extends StaticBlockingTile {
     type = "wall";
-    // char = "░░";
-    char = "W";
+    char = "╬╬"
+    // char = "╫╫";
+    // char = "W";
 }
 class TradingPost extends Tile {
     type = "trading post";
-    char = "░░";
+    char = "$$";
     onPlayerTryEnter(){
-
+        game.tradingpost.launch();
         return true;
+
     }
     onPlayerEnter(player){
-        super.onPlayerEnter(player);
-        tradingPostGUI.show();
     }
 }
 
-class Door extends Tile {
+class Door extends StaticBlockingTile {
     onPlayerTryEnter (player) {
-        let unlock = player.inventory.some(x => x.type ==="AccessCard");
-        if(! unlock) GUI.blockMessage("ACCESS DENIED: this door requires an AccessCard", 2.5);
-        return unlock;
+        super.onPlayerTryEnter();
+        game.dialog.setMessages("You shoule be dressed better...", "if you want join THE CLUB.")
+        return false;
     }
     type = "door";
-    // char = "█";
-    char = "E";
+    char = "█▐";
 }
 
 class Guide extends Tile {
     onPlayerTryEnter (player) { return true; }
     onPlayerEnter(){
-        dialog.setMessages("Welcome to the rotting temple...")
+        game.dialog.setMessages("wow...",
+                        "you are NETRUIN's first guest in... ",
+                        "well, in a pretty long time...",
+                        "i have some bad news...",
+                        "there's nothing going on here...",
+                        "if anyone is still around...",
+                        "they'll be in THE CLUB...",
+                        "but...",
+                        "if you want to get in to THE CLUB...",
+                        "you're going to need...",
+                        "a BETTER OUTFIT.",
+                        )
     }
     type = "guide";
-    char = "O";
+    char = "G";
 }

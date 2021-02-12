@@ -1,9 +1,9 @@
 const SPAWN_TABLE = {
     soil: [
-        { entity: "Flower", spawnRate: 10 }
+        { entity: "Flower", spawnRate: 4 }
     ],
-    sand: [
-        { entity: "Clover", spawnRate: 10 }
+    sludge: [
+        { entity: "Gem", spawnRate: 1 }
     ],
     grass: [
         { entity: "Clover", spawnRate: 10 },
@@ -11,17 +11,44 @@ const SPAWN_TABLE = {
     ]
 }
 
-const TRADES = [
-    {
-        input: "flower",
-        quantity: 2,
-        output: "AccessCard",
-        accepted: false
-    },
-    {
-        input: "clover",
-        quantity: 2,
-        output: "AccessCard2",
-        accepted: false
-    }
-]
+const ITEM_CHARS = {
+    gem: "♦",
+    flower: "*"
+}
+
+
+const GARMENTS = {
+    head: [
+        "ball cap",
+        "visor"
+    ],
+    torso: [
+        "tee shirt",
+        "track jacket",
+        "sweater"
+    ],
+    legs: [
+        "jeans",
+        "leggings"
+    ],
+    feet: [
+        "sneakers",
+        "cowboy boots",
+    ],
+    colors: [
+        "pink",
+        "black",
+        "yellow",
+        "nylon",
+        "striped",
+        "leather",
+        "green",
+        "red"
+    ],
+    specialWords: [
+        "cool",
+        "fancy",
+        "shimmering",
+        "epic",
+    ]
+}

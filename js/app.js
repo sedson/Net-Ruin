@@ -86,6 +86,14 @@ class Player {
         this.playerTile.classList.add("player");
         this.playerTile.innerText = "@";
         dom.get("#gameboard").appendChild(this.playerTile);
+        this.outfit = {
+            head: "--",
+            torso: "--",
+            legs: "--",
+            feet: "--"
+        }
+        GUI.showInventory(this.inventory);
+        GUI.showOutfit(this.outfit);
     }
 
     addToInventory (item) {
@@ -115,7 +123,7 @@ class Player {
                         this.draw();
                     }
                 }
-                gameboard.getTile(this.pos).onPlayerEnter(this);
+                this.gameboard.getTile(this.pos).onPlayerEnter(this);
 
                 GUI.setTileInfo(this.gameboard.getTile(this.pos));
                 let coords = this.pos.add(this.gameboard.offset);
@@ -139,8 +147,9 @@ class Player {
             for(let i = 0; i < trade.quantity; i++){
                 this.inventory.splice(this.inventory.findIndex(x => x.type == trade.input), 1);
             }
-            this.inventory.push({type: `${trade.output}`});
+            this.outfit[trade.type] = trade.output;
             GUI.showInventory(this.inventory);
+            GUI.showOutfit(this.outfit);
             trade.accepted = true;
         }
     }
@@ -175,7 +184,7 @@ function spawnEntities (gameboard) {
 //------------------------------------------------
 const GUI = {
     reset: () => {
-        info.textContent= "";
+        dom.get("#info").textContent= "";
     },
 
     setTileInfo: (tile) => {
@@ -199,7 +208,7 @@ const GUI = {
         newMessage.id = "warning";
         newMessage.innerHTML = `<p>${message}</p>`;
         newMessage.style.animationDuration = duration + "s";
-        dom.get("body").appendChild(newMessage);
+        dom.get("#info").appendChild(newMessage);
     },
 
     addItemToInfo: function () {
@@ -212,22 +221,58 @@ const GUI = {
         let list = dom.get("#inventory-list");
         list.textContent = "";
         for(let item of itemArr){
-            list.innerHTML += (`<li>${item.type}</li>`)
+            list.innerHTML += (`<span class="inventory-item ${item.type}">${item.char}</span>`)
         }
+    },
+
+    showOutfit: (outfit) => {
+        let list = dom.get("#outfit-list");
+        list.textContent = "";
+        for(let [key, val] of Object.entries(outfit)){
+            list.innerHTML += `<p>${key}: ${val}</p>`
+        }
+
     }
 }
 
 //------------------------------------------------
 // Actually start the game
 //------------------------------------------------
+class Game {
+    constructor(){
+        this.gameboard = new GameBoard(MAP_DATA, 12, 20);
+        this.started = false;
+        this.gameboard.offset = new Position(23, 27);
+        spawnEntities(this.gameboard);
 
-const gameboard = new GameBoard(MAP_DATA, 12, 20);
-spawnEntities(gameboard);
-gameboard.draw();
+        this.player = new Player(3, 3, this.gameboard);
+        // Add keyboard event listener to the document
+        document.onkeydown = () => this.player.tryMove(event);
+        this.dialog = new Dialog(dom.get("#dialog"), dom.get("#dialog-message"), dom.get("#dialog-next"));
+        this.tradingpost = new TradingPostGUI();
+    }
 
-const player = new Player(3, 3, gameboard);
-document.onkeydown = () => { player.tryMove(event); }
+    start(){
+        this.gameboard.draw();
+        this.player.draw();
+        if(! this.started ){
+            this.dialog.setMessages("LOGGING ON...", `VISITOR: ${Math.floor(Math.random() * 9999)}...`, "This is NETRUIN...", "Use arrow keys or WASD to move...")
+            this.started = true;
+        }
+    }
+}
 
-player.draw();
-const dialog = new Dialog(dom.get("#dialog"), dom.get("#dialog-message"), dom.get("#dialog-next"));
-const tradingPostGUI = new TradingPostGUI();
+let game = new Game();
+game.start();
+
+
+const store = () => {
+    window.localStorage.setItem("savedGame", JSON.stringify(game));
+
+}
+
+const load = () => {
+    let json = window.localStorage.getItem("savedGame");
+    let game = JSON.parse(json);
+    console.log(game);
+}

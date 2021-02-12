@@ -7,20 +7,19 @@
   /* pointer-events: none; */
   user-select: none;
   font-size: 32px;
+  color: var(--mid);
 }
 
 .player {
     background: transparent;
-    color: var(--light);
+    /* color: var(--light) */
+    color: yellow;
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
-.wall {
-    font-family: "SPRITES", monospace;
-    font-weight: normal;
-    font-size: 40px;
-    color: var(--mid);
+.wall, .ruin {
+    font-size: 36px;
 }
 
 .grass {
@@ -32,23 +31,17 @@
 }
 
 .soil{
-    font-family: "SPRITES", monospace;
-  color: tan;
-}
-.sand{
-    font-family: "SPRITES", monospace;
   color: var(--mid);
 }
-
+.sand{
+  color: var(--mid);
+}
 
 .rock {
   color: var(--mid);
 }
 
 .door {
-    font-family: "SPRITES", monospace;
-    font-size: 40px;
-
     color: var(--mid2);
 }
 
@@ -61,20 +54,29 @@
 }
 
 .flower{
-    font-family: "SPRITES", monospace;
-    font-weight: normal;
-    color: coral;
+    color: hotpink;
 }
 
-.clover{
-    font-family: "SPRITES", monospace;
-    color: darkgreen;
+.gem{
+    color: lime;
 }
 
 .trading {
-    color: cornflowerblue;
+    color: var(--light);
 }
 
 .guide {
-    color: teal;
+    color: cyan;
+}
+
+.sludge{
+    color: #778c2f;
+}
+
+.path {
+    color: var(--mid);
+}
+
+.ruin {
+    color: var(--mid);
 }

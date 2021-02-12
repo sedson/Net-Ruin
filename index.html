@@ -8,28 +8,34 @@
     <title>Adventure Game</title>
   </head>
   <body>
-    <div id="gameboard">
-        <section id="dialog">
+      <h1>NETRUIN</h1>
+    <section id="gameboard">
+        <dic id="dialog">
             <p id="dialog-message"></p>
             <a id="dialog-next">OK</a>
-        </section>
-        <section id="trade">
-            <h2>TRADING POST</h2>
+        </dic>
+        <dic id="trade">
+            <h1>TRADING POST</h1>
             <p id="trade-message"></p>
             <p id="trade-accept">Accept</p>
             <p class="nav"><a class="prev">Prev</a><a class="next">Next</a></p>
             <a id="trade-close">×</a>
-        </section>
-    </div>
+        </dic>
+    </section>
     <div id="info"></div>
-    <div id="inventory">
-        <h3>Bag</h3>
-        <ul id="inventory-list">
+    <section id="extra">
+        <div id="outfit" class="box">
+            <h3>Outfit</h3>
+            <div id="outfit-list">
+            </div>
+        </div>
+        <div id="inventory" class="box">
+            <h3>Bag</h3>
+            <div id="inventory-list">
+            </div>
+        </div>
 
-        </ul>
-    </div>
-    <!-- <div class="cover"> -->
-
+    </section>
     <script src="data/testmap_data.js"></script>
     <script src="data/game_data.js"></script>
     <script src="js/tiles.js"></script>
