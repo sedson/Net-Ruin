@@ -23,6 +23,8 @@ const SPAWN_TABLE = {
 // todo - clean this up
 const ITEM_NAMES = ["apple", "flower", "gem", "ring", "shine"];
 
+let OUTFIT_SCORE_MIN = 4;
+
 const ITEM_CHARS = {
     apple: "•",
     flower: "*",
