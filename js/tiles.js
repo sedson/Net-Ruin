@@ -118,7 +118,7 @@ class Club extends Tile {
                 return true;
             } else {
                 GUI.blockMessage("THE CLUB", 1);
-                game.dialog.setMessages("You need a better outfit...", "if you want join THE CLUB")
+                game.dialog.setMessages("You need a better outfit...", "if you want to join THE CLUB")
                 return false;
             }
         } else {
