@@ -261,6 +261,9 @@ h3 {
     background: var(--green);
 }
 
+.overlay a {
+    color: var(--yellow);
+}
 .overlay a:hover{
-    border-bottom: 4px solid var(--light);
+    border-bottom: 4px solid var(--yellow);
 }

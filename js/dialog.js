@@ -23,7 +23,7 @@ class Dialog {
             this.letterIndex++;
             this.text.innerText = this.messages[this.messageIndex].substring(0, this.letterIndex);
             // Calls the next letter every 40 milliseconds
-            setTimeout(this.typeMessage.bind(this), 40); //why?
+            setTimeout(this.typeMessage.bind(this), 40); // why?
         }
     }
 
