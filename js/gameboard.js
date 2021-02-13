@@ -13,6 +13,7 @@ class GameBoard {
         this.boundarySize = 3;
         this.tempTiles = [];
         this.displaytiles = this.makeTileArray();
+        GUI.showBody();
     }
 
     makeTileArray() {

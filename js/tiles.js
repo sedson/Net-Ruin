@@ -115,10 +115,11 @@ class Club extends Tile {
             if(coolOutfit) {
                 game.dialog.setMessages("Welcome to THE CLUB")
                 player.hasCoolOutfit = true;
+                setTimeout(() => GUI.showWin(), 3000);
                 return true;
             } else {
                 GUI.blockMessage("THE CLUB", 1);
-                game.dialog.setMessages("You need a better outfit...", "if you want join THE CLUB")
+                game.dialog.setMessages("You need a better outfit...", "if you want to join THE CLUB")
                 return false;
             }
         } else {
@@ -144,7 +145,7 @@ class Club extends Tile {
             }
             if(GARMENTS.specialWords.includes(word)) score +=1; // also add bonus for
         }
-        return score >= 4; // should not be hard coded
+        return score >= OUTFIT_SCORE_MIN; // should not be hard coded
     }
 }
 

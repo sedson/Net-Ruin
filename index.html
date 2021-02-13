@@ -10,17 +10,29 @@
   <body>
       <h1>NETRUIN</h1>
     <section id="gameboard">
-        <dic id="dialog">
+        <div id="dialog">
             <p id="dialog-message"></p>
             <a id="dialog-next">OK</a>
-        </dic>
-        <dic id="trade">
+        </div>
+        <div id="trade">
             <h2>TRADING POST</h2>
             <p id="trade-message"></p>
             <p id="trade-accept">Accept</p>
             <p class="nav"><a class="prev">Prev</a><a class="next">Next</a></p>
             <a id="trade-close">×</a>
-        </dic>
+        </div>
+        <div id="start" class="overlay">
+            <h2>NETRUIN</h2>
+            <p>
+                <a onclick="GUI.hideOverlay()">PLAY</a>
+            </p>
+        </div>
+        <div id="win" class="overlay">
+            <h2>COOL OUTFIT</h2>
+            <p>
+                <a onclick="GUI.hideOverlay()">Keep Playing</a>
+            </p>
+        </div>
     </section>
     <div id="info"></div>
     <section id="extra">
@@ -34,8 +46,8 @@
             <div id="inventory-list">
             </div>
         </div>
-
     </section>
+
     <script src="data/testmap_data.js"></script>
     <script src="data/game_data.js"></script>
     <script src="js/tiles.js"></script>

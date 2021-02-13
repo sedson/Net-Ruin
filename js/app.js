@@ -87,7 +87,7 @@ class Player {
         this.playerTile = makeTile(this.pos.row, this.pos.col, TILE_SIZE);
         this.playerTile.id = "player";
         this.playerTile.classList.add("player");
-        this.playerTile.innerText = "☺";
+        this.playerTile.innerText = "@";
         this.hasCoolOutfit = false;
         dom.get("#gameboard").appendChild(this.playerTile);
 
@@ -240,6 +240,24 @@ const GUI = {
         for(let [key, val] of Object.entries(outfit)){
             list.innerHTML += `<p>${val}</p>`
         }
+    },
+
+    showBody: () => {
+        dom.get("body").style.display = "block";
+    },
+
+    hideOverlay: () => {
+        dom.all(".overlay").forEach(item => item.style.display = "none");
+    },
+
+    showWin: () => {
+        dom.get("#win").style.display = "flex";
+    },
+
+    clearAllTiles: () => {
+        dom.all(".tile").forEach((item, i) => {
+            item.remove();
+        });
 
     }
 }
@@ -273,17 +291,10 @@ class Game {
     }
 }
 
-let game = new Game();
-game.start();
-
-
-const store = () => {
-    window.localStorage.setItem("savedGame", JSON.stringify(game));
-
+const newGame = () => {
+    GUI.clearAllTiles();
+    game = new Game();
+    game.start();
 }
 
-const load = () => {
-    let json = window.localStorage.getItem("savedGame");
-    let game = JSON.parse(json);
-    console.log(game);
-}
+newGame();
