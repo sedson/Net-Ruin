@@ -3,60 +3,53 @@ class Entity {
         this.parentTile = tile;
         this.domElems = [];
     }
+    // Creates a DOM button to display and pick up this enity
     playerInteraction(player) {
-        let par = document.createElement("p");
-        par.innerText = ">";
-        let par2 = document.createElement("p");
-        par2.innerText = this.type;
-        GUI.addItemToInfo(par, par2);
-    }
-    type = "";
-    char = "";
+        let arrow = document.createElement("p");
+        arrow.innerText = ">";
 
-    attachToDom() {
-        [...arguments].forEach(item => this.domElems.push(item));
-    }
-}
+        let entityIcon = dom.make("p");
+        entityIcon.className = `${this.type}`; // give it the type as a class so it gets css colors
+        entityIcon.innerText = this.char;
 
-class PlantEntity extends Entity {
-    playerInteraction(player) {
-        let par = document.createElement("p");
-        par.innerText = ">";
-        let par2 = dom.make("p");
-        par2.className = `${this.type}`
-        let par3 = dom.make("p");
-        par3.innerText = this.type;
-        par2.innerText = this.char;
-        let link = document.createElement("a");
-        link.innerText = "Pick Up";
+        let entityName = dom.make("p");
+        entityName.innerText = this.type + " :";
 
-
-        link.addEventListener("click", () => {
+        let pickUpButton = document.createElement("a");
+        pickUpButton.innerText = "Pick Up";
+        pickUpButton.addEventListener("click", () => {
             player.addToInventory(this);
             this.parentTile.removeEnity(this);
             this.domElems.forEach(x => x.remove());
         });
 
-        this.attachToDom(par, par2, par3, link);
-        GUI.addItemToInfo(par, par2, par3, link);
+        // add the e;ems to this set of tracked objects to delete
+        this.domElems.push(arrow, entityIcon, entityName, pickUpButton);
+
+        // Add them to dom
+        GUI.addItemToInfo(arrow, entityIcon, entityName, pickUpButton);
     }
+    type = "";
+    char = "";
 }
 
-class Flower extends PlantEntity {
-    type = "flower"
+class Flower extends Entity {
+    type = "flower";
     char = "*";
 }
-
-class Gem extends PlantEntity {
-    type = "gem"
+class Gem extends Entity {
+    type = "gem";
     char = "♦";
 }
-
-class Terminal extends Entity {
-    type = "terminal"
-    char = "T"
-    playerInteraction(player){
-        super.playerInteraction(player);
-        dialog.setMessages("Welcome...", "Stay a while...");
-    }
+class Ring extends Entity {
+    type = "ring";
+    char = "◦";
+}
+class Shine extends Entity {
+    type = "shine";
+    char = "☼";
+}
+class Apple extends Entity {
+    type = "apple";
+    char = "•"
 }

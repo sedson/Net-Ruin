@@ -1,5 +1,5 @@
 //------------------------------------------------
-// dom wrapper functions
+// dom helper functions
 //------------------------------------------------
 const dom = {
     get:  x => document.querySelector(x),
@@ -9,9 +9,8 @@ const dom = {
 
 // using CSS styling to position elements
 const setSizeAndPos = (elem, size, row, col) => {
-    // elem.style.left   = col * size + "px";
-    // elem.style.top    = row * size + "px";
-    elem.style.transform = `translate(${col * size}px, ${row * size}px)`;
+    elem.style.left   = col * size + "px";
+    elem.style.top    = row * size + "px";
     elem.style.width  = size + "px";
     elem.style.height = size + "px";
 }
@@ -48,7 +47,12 @@ const CONTROLS = {
 
 // Size of the tiles on the DOM -- in pixels
 const TILE_SIZE = 40;
+
+//------------------------------------------------
+// Random getters
+//------------------------------------------------
 const randArr = arr => arr[Math.floor(Math.random() * arr.length)];
+const rand = function(){randArr([...arguments])};
 
 //------------------------------------------------
 // Keeping a class to store [row, col] positions and clear a bit of repeated code
@@ -77,15 +81,17 @@ class Player {
     constructor(row, col, gameboard){
         this.pos = new Position(row, col);
         this.gameboard = gameboard;
-        this.inventory = [];
         this.movementLocked = false;
 
         // making the dom element and storing a refernece to it
         this.playerTile = makeTile(this.pos.row, this.pos.col, TILE_SIZE);
         this.playerTile.id = "player";
         this.playerTile.classList.add("player");
-        this.playerTile.innerText = "@";
+        this.playerTile.innerText = "☺";
+        this.hasCoolOutfit = false;
         dom.get("#gameboard").appendChild(this.playerTile);
+
+        this.inventory = [];
         this.outfit = {
             head: "--",
             torso: "--",
@@ -94,10 +100,12 @@ class Player {
         }
         GUI.showInventory(this.inventory);
         GUI.showOutfit(this.outfit);
+        GUI.setTileInfo(this.gameboard.getTile(this.pos));
     }
 
     addToInventory (item) {
         this.inventory.push(item);
+        this.inventory.sort((a, b) => a.type < b.type ? -1 : 1);
         GUI.showInventory(this.inventory);
     }
 
@@ -133,9 +141,8 @@ class Player {
     }
 
     draw () {
-        this.playerTile.style.transform = `translate(${this.pos.col * TILE_SIZE}px, ${this.pos.row * TILE_SIZE}px)`
-        // this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
-        // this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
+        this.playerTile.style.left =  (this.pos.col * TILE_SIZE) + "px";
+        this.playerTile.style.top  =  (this.pos.row * TILE_SIZE) + "px";
     }
 
     validateTrade (trade) {
@@ -160,17 +167,18 @@ class Player {
 }
 
 //------------------------------------------------
-// Set up processes
+// Spawn the five types of entities across the map
+// -- loop all tiles, and spawn objects with a po
 //------------------------------------------------
 function spawnEntities (gameboard) {
     for(let row of gameboard.tilemap.tiles){
         for(let tile of row) {
             // look to see if any of the enitities should spawn here
             if(SPAWN_TABLE.hasOwnProperty(tile.type)){
-                for (let potSpawn of SPAWN_TABLE[tile.type]){
+                for (let potentialSpawn of SPAWN_TABLE[tile.type]){
                     let rand = Math.random() * 100;
-                    if(rand < potSpawn.spawnRate){
-                        tile.containedEntities.push(eval(`new ${potSpawn.entity}(tile)`));
+                    if(rand < potentialSpawn.spawnRate){
+                        tile.containedEntities.push(eval(`new ${potentialSpawn.entity}(tile)`));
                     }
                 }
             }
@@ -217,11 +225,12 @@ const GUI = {
         });
     },
 
-    showInventory: (itemArr) => {
+    showInventory: (inventory) => {
         let list = dom.get("#inventory-list");
-        list.textContent = "";
-        for(let item of itemArr){
-            list.innerHTML += (`<span class="inventory-item ${item.type}">${item.char}</span>`)
+        list.innerText = "";
+        for(let i = 0; i < inventory.length; i++){
+            if (i > 0 && inventory[i].type !== inventory[i - 1].type) list.innerHTML += "<br>";
+            list.innerHTML += (`<span class="inventory-item ${inventory[i].type}">${inventory[i].char}</span>`);
         }
     },
 
@@ -229,7 +238,7 @@ const GUI = {
         let list = dom.get("#outfit-list");
         list.textContent = "";
         for(let [key, val] of Object.entries(outfit)){
-            list.innerHTML += `<p>${key}: ${val}</p>`
+            list.innerHTML += `<p>${val}</p>`
         }
 
     }
@@ -245,7 +254,7 @@ class Game {
         this.gameboard.offset = new Position(23, 27);
         spawnEntities(this.gameboard);
 
-        this.player = new Player(3, 3, this.gameboard);
+        this.player = new Player(6, 10, this.gameboard);
         // Add keyboard event listener to the document
         document.onkeydown = () => this.player.tryMove(event);
         this.dialog = new Dialog(dom.get("#dialog"), dom.get("#dialog-message"), dom.get("#dialog-next"));
@@ -256,7 +265,9 @@ class Game {
         this.gameboard.draw();
         this.player.draw();
         if(! this.started ){
-            this.dialog.setMessages("LOGGING ON...", `VISITOR: ${Math.floor(Math.random() * 9999)}...`, "This is NETRUIN...", "Use arrow keys or WASD to move...")
+            this.dialog.setMessages("LOGGING ON...", `VISITOR: ${Math.floor(Math.random() * 9999)}...`,
+                                    "This is NETRUIN...", "Use arrow keys or WASD to move...",
+                                    "← Talk to the guide over there.")
             this.started = true;
         }
     }

@@ -1,51 +1,50 @@
-.tile{
-  position: absolute;
-  background: ;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* pointer-events: none; */
-  user-select: none;
-  font-size: 32px;
-  color: var(--mid);
+.tile {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    font-size: 32px;
+    color: var(--mid);
 }
 
 .player {
     background: transparent;
-    /* color: var(--light) */
-    color: yellow;
+    color: var(--yellow);
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
+.wall, .ruin, .club, .boundary, .terra{
+    font-size: 40px;
+}
+
 .wall, .ruin {
-    font-size: 36px;
+    color: var(--brown);
 }
 
-.grass {
-  color: var(--mid);
+.boundary, .trading, .guide, .snow, .rock{
+    color: var(--light);
 }
 
-.empty{
-  color: black;
+.sludge, .terra{
+    color: var(--green);
 }
 
-.soil{
-  color: var(--mid);
-}
-.sand{
-  color: var(--mid);
+.water, .trading{
+    color: var(--blue);
 }
 
-.rock {
-  color: var(--mid);
+.club {
+    animation-name: colorCycle;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
 }
 
-.door {
-    color: var(--mid2);
-}
-
-.tile:hover{
+@keyframes colorCycle {
+    0%{color: var(--light)}
+    50%{color: var(--pink)}
+    100%{color: var(--light)};
 }
 
 .entity {
@@ -54,29 +53,21 @@
 }
 
 .flower{
-    color: hotpink;
+    color: var(--pink);
 }
 
 .gem{
-    color: lime;
+    color: var(--green2);
 }
 
-.trading {
-    color: var(--light);
+.ring {
+    color: var(--orange);
 }
 
-.guide {
-    color: cyan;
+.shine {
+    color: var(--blue2);
 }
 
-.sludge{
-    color: #778c2f;
-}
-
-.path {
-    color: var(--mid);
-}
-
-.ruin {
-    color: var(--mid);
+.apple {
+    color: var(--red);
 }

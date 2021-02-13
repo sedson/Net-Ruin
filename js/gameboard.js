@@ -66,7 +66,7 @@ class GameBoard {
                 if(dataTile.containedEntities.length > 0){
                     for(let e of dataTile.containedEntities){
                         let visE = makeEntity(row, col, TILE_SIZE, e.type, e.char, this);
-                        e.attachToDom(visE);
+                        e.domElems.push(visE);
                         this.tempTiles.push(visE);
                     }
                 }
@@ -94,7 +94,7 @@ class TileMap {
     }
 
     getTile(row, col) {
-        return this.inBounds(row, col) ? this.tiles[row][col] : new Void(-1,-1);
+        return this.inBounds(row, col) ? this.tiles[row][col] : new Boundary(-1,-1);
     }
 
     // method to build an array of Tile Objects from an array of strings
