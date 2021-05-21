@@ -2,6 +2,8 @@ class Entity {
     constructor (tile) {
         this.parentTile = tile;
         this.domElems = [];
+        this.type = "";
+        this.char = "";
     }
     // Creates a DOM button to display and pick up this enity
     playerInteraction(player) {
@@ -29,27 +31,40 @@ class Entity {
         // Add them to dom
         GUI.addItemToInfo(arrow, entityIcon, entityName, pickUpButton);
     }
-    type = "";
-    char = "";
 }
 
 class Flower extends Entity {
-    type = "flower";
-    char = "*";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "flower";
+      this.char = "*";
+    }
 }
 class Gem extends Entity {
-    type = "gem";
-    char = "♦";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "gem";
+      this.char = "♦";
+    }
 }
 class Ring extends Entity {
-    type = "ring";
-    char = "◦";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "ring";
+      this.char = "◦";
+    }
 }
 class Shine extends Entity {
-    type = "shine";
-    char = "☼";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "shine";
+      this.char = "☼";
+    }
 }
 class Apple extends Entity {
-    type = "apple";
-    char = "•"
+    constructor(x, y) {
+      super(x, y);
+      this.type = "apple";
+      this.char = "•";
+    }
 }

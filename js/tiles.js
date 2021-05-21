@@ -5,11 +5,13 @@ class Tile {
     constructor (x, y) {
         this.x = x;
         this.y = y;
+        this.type = "";
+        this.char = "";
+        this.containedEntities = [];
     }
 
     onPlayerTryEnter () { return true; }
-    type = "";
-    char = "";
+
 
     onPlayerEnter (player) {
         for(let entity of this.containedEntities){
@@ -17,14 +19,12 @@ class Tile {
         }
     }
 
-    containedEntities = [];
-
     addEntity (entity) {
       this.containedEntities.push(entity);
     }
 
     removeEnity (entity) {
-        this.containedEntities = this.containedEntities.filter(x => x !== entity);
+      this.containedEntities = this.containedEntities.filter(x => x !== entity);
     }
 }
 
@@ -32,36 +32,61 @@ class Tile {
 // Basic tiles
 //--------------------------------------------------------
 class Void extends Tile {
-    type = "void";
-    char = "";
+    constructor(x, y){
+      super(x, y);
+      this.type = "void";
+      this.char = "";
+    }
+
 }
 class Soil extends Tile {
-    type = "soil";
-    char = "ˆ";
+    constructor(x, y){
+      super(x, y);
+      this.type = "soil";
+      this.char = "ˆ";
+    }
 }
 class Ash extends Tile {
-    type = "ash";
-    char = "‘";
+    constructor(x, y){
+      super(x, y);
+      this.type = "ash";
+      this.char = "‘";
+    }
 }
 class Snow extends Tile {
-    type = "snow";
-    char = "·";
+    constructor(x, y){
+      super(x, y);
+      this.type = "snow";
+      this.char = "·";
+    }
 }
 class Sand extends Tile {
-    type = "sand";
-    char = "·";
+    constructor(x, y){
+      super(x, y);
+      this.type = "sand";
+      this.char = "·";
+    }
 }
 class Path extends Tile {
-    type = "path";
-    char = "●";
+    constructor(x, y){
+      super(x, y);
+      this.type = "path";
+      this.char = "●";
+    }
 }
 class Sludge extends Tile {
-    type = "sludge";
-    char = "~";
+    constructor(x, y){
+      super(x, y);
+      this.type = "sludge";
+      this.char = "~";
+    }
 }
 class Terra extends Tile {
-    type = "terra";
-    char = "\\";
+    constructor(x, y){
+      super(x, y);
+      this.type = "terra";
+      this.char = "\\";
+    }
 }
 
 //--------------------------------------------------------
@@ -74,32 +99,50 @@ class StaticBlockingTile extends Tile{
     }
 }
 class Wall extends StaticBlockingTile {
-    type = "wall";
-    char = "╬"
+    constructor(x, y) {
+      super(x, y);
+      this.type = "wall";
+      this.char = "╬"
+    }
 }
 class Ruin extends StaticBlockingTile {
-    type = "ruin";
-    char = randArr(["╔", "╚", "╦", "╩"]);
+    constructor(x, y) {
+      super(x, y);
+      this.type = "ruin";
+      this.char = randArr(["╔", "╚", "╦", "╩"]);
+    }
 }
 class Rock extends StaticBlockingTile {
-    type = "rock";
-    char = "▲";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "rock";
+      this.char = "▲";
+    }
 }
 class Water extends StaticBlockingTile {
-    type = "water";
-    char = "≈";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "water";
+      this.char = "≈";
+    }
 }
 class Boundary extends StaticBlockingTile {
-    type = "boundary";
-    char = "▒";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "boundary";
+      this.char = "▒";
+    }
 }
 
 //--------------------------------------------------------
 // Tiles with special interactions
 //--------------------------------------------------------
 class TradingPost extends Tile {
-    type = "trading post";
-    char = "☻";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "trading post";
+      this.char = "☻";
+    }
     onPlayerTryEnter(){
         game.tradingpost.launch();
         return true;
@@ -107,8 +150,11 @@ class TradingPost extends Tile {
 }
 
 class Club extends Tile {
-    type = "club";
-    char = "░";
+    constructor(x, y) {
+      super(x, y);
+      this.type = "club";
+      this.char = "░";
+    }
     onPlayerTryEnter (player) {
         if( ! player.hasCoolOutfit){
             let coolOutfit = this.rateOutfit(player.outfit);
@@ -150,6 +196,12 @@ class Club extends Tile {
 }
 
 class Guide extends Tile {
+    constructor(x, y){
+      super(x, y);
+      this.type = "guide";
+      this.char = "☻";
+    }
+
     onPlayerEnter(){
         game.dialog.setMessages("wow...",
                         "so this is NETRUIN... ",
@@ -166,6 +218,5 @@ class Guide extends Tile {
                         "a BETTER OUTFIT."
                         )
     }
-    type = "guide";
-    char = "☻";
+
 }

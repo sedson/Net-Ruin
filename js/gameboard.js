@@ -108,6 +108,7 @@ class TileMap {
             for (let col = 0; col < data[0].length; col++){
                 let tileType = data[row][col];
                 // Construct a tile from the data array [THANKS THIAGO!!]
+                // console.log(`new ${tileType}(${row}, ${col})`)
                 let tile = eval(`new ${tileType}(${row}, ${col})`);
                 rowArr.push(tile);
             }

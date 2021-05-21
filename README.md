@@ -46,3 +46,9 @@ Modal Dialog for special events
 -  There are many many objects to find and user can keep playing as long as they want.
 -  Buildings that the player can enter - look dark from outside, but when enter, the rest of the map goes dark.
 -  Design a custom font so that instead of ASCII i can get a series of custom sprites with color very easily
+
+
+a vintage pink cap
+a glossy smock
+glossy cargo pants
+vintage pink cyber boots
